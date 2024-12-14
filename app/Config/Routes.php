@@ -7,4 +7,4 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
-$routes->get('/tst', 'CTst::index');
+$routes->match(['GET', 'POST'], '/autenticacion', 'CLogin::index');

@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="<?= base_url('css/style.css'); ?>" >
+    <link rel="stylesheet" href="<?= base_url('css/styleBars.css'); ?>" >
   </head>
   <body>
 
@@ -18,7 +18,10 @@
         
         <?= $this->include("plantillas/barraNav"); ?>
 
+        <!-- contenido que va variando -->
         <?= $this->renderSection("principal"); ?>
+
+        </div>   <!--  El cierre del div de barraNav -->
 
     </div>
 
