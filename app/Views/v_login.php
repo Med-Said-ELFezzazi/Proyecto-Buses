@@ -1,6 +1,7 @@
 <?= $this->extend("plantillas/layout2zonas"); ?>
 
 <?= $this->section("principal"); ?>
+
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -16,10 +17,18 @@
         <div class="container auth-container">
             <!-- Msg error -->
             <?php if (session()->getFlashdata('error')): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <?= session()->getFlashdata('error') ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= session()->getFlashdata('error') ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
+            <!-- Msg confirmación -->
+            <?php if (session()->getFlashdata('confirmacion')): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= session()->getFlashdata('confirmacion') ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             <?php endif; ?>
 
 
@@ -88,62 +97,87 @@
                     <?= form_open(site_url('autenticacion')) ?>
                         <!-- DNI -->
                         <div class="mb-3">
-                            <label for="registerDni" class="form-label">DNI</label>
+                            <label for="registroDni" class="form-label">DNI</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-id-card form-icon"></i></span>
-                                <?= form_input(['type' => 'text',
-                                                'name' => 'registerDni',
-                                                'id' => 'registerDni',
+                                <?php
+                                    // Repoblar el campo con el valor que se envió
+                                    $valor = session()->getFlashdata('dni') ?: "";
+                                    echo form_input(['type' => 'text',
+                                                'name' => 'registroDni',
+                                                'id' => 'registroDni',
                                                 'class' => 'form-control',
-                                                'placeholder' => 'Introduce tu DNI']) ?>
+                                                'value' => $valor,
+                                                'placeholder' => 'Introduce tu DNI']); 
+                                ?>
                             </div>
                         </div>
                         <!--Nombre-->
                         <div class="mb-3">
-                            <label for="registerName" class="form-label">Nombre completo</label>
+                            <label for="registroNom" class="form-label">Nombre completo</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-user form-icon"></i></span>
-                                <?= form_input(['type' => 'text',
-                                                'name' => 'registerName',
-                                                'id' => 'registerName',
+                                <?php
+                                    // Repoblar el campo con el valor que se envió
+                                    $valor = session()->getFlashdata('nombre') ?: "";
+                                    echo form_input(['type' => 'text',
+                                                'name' => 'registroNom',
+                                                'id' => 'registroNom',
                                                 'class' => 'form-control',
-                                                'placeholder' => 'Introduce tu nombre']) ?>
+                                                'value' => $valor,
+                                                'placeholder' => 'Introduce tu nombre']);         
+                                ?>
                             </div>
                         </div>
                         <!--Email -->
                         <div class="mb-3">
-                            <label for="registerEmail" class="form-label">Correo electrónico</label>
+                            <label for="registroEmail" class="form-label">Correo electrónico</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-envelope form-icon"></i></span>
-                                <?= form_input(['type' => 'email',
-                                                'name' => 'registerName',
-                                                'id' => 'registerEmail',
-                                                'class' => 'form-control',
-                                                'placeholder' => 'Introduce tu correo']) ?>
+                                <?php
+                                    // Repoblar el campo con el valor que se envió
+                                    $valor = session()->getFlashdata('email') ?: "";
+                                    echo form_input(['type' => 'email',
+                                    'name' => 'registroEmail',
+                                    'id' => 'registroEmail',
+                                    'class' => 'form-control',
+                                    'value' => $valor,
+                                    'placeholder' => 'Introduce tu correo']);
+                                ?>
                             </div>
                         </div>
                         <!-- telefono-->
                         <div class="mb-3">
-                            <label for="registerTele" class="form-label">Número de telefono</label>
+                            <label for="registroTele" class="form-label">Número de telefono</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-phone form-icon"></i></span>
-                                <?= form_input(['type' => 'number',
-                                                'name' => 'registerTele',
-                                                'id' => 'registerTele',
+                                <?php
+                                    // Repoblar el campo con el valor que se envió
+                                    $valor = session()->getFlashdata('tele') ?: "";
+                                    echo form_input(['type' => 'number',
+                                                'name' => 'registroTele',
+                                                'id' => 'registroTele',
                                                 'class' => 'form-control',
-                                                'placeholder' => 'Introduce tu Número']) ?>
+                                                'value' => $valor,
+                                                'placeholder' => 'Introduce tu Número']); 
+                                ?>
                             </div>
                         </div>
                         <!-- Password-->
                         <div class="mb-3">
-                            <label for="registerPwd" class="form-label">Contraseña</label>
+                            <label for="registroPwd" class="form-label">Contraseña</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-lock form-icon"></i></span>
-                                <?= form_input(['type' => 'password',
-                                                'name' => 'registerPwd',
-                                                'id' => 'registerPwd',
+                                <?php
+                                    // Repoblar el campo con el valor que se envió
+                                    $valor = session()->getFlashdata('pwd') ?: "";
+                                    echo form_input(['type' => 'password',
+                                                'name' => 'registroPwd',
+                                                'id' => 'registroPwd',
                                                 'class' => 'form-control',
-                                                'placeholder' => 'Crea una contraseña']) ?>
+                                                'value' => $valor,
+                                                'placeholder' => 'Crea una contraseña']); 
+                                ?>
                             </div>
                         </div>
                         <div class="d-grid">
@@ -167,8 +201,9 @@
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- <script src="<= base_url('js/navLoginReg.js') ?>"></script>   Logica que hace al recargar se queda en el mismo tab 'login/registro' -->
+                                                                            <!--Guardando tab activo en localstorage 'NO VA' -->
     </body>
     </html>
-
 
 <?= $this->endSection(); ?>
