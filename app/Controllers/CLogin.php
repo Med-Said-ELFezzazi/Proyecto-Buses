@@ -27,12 +27,6 @@
 
         // Función que comprueba si los datos de registro estan validos
         public function datosRegistroValidos($dni, $nombre, $email, $tele, $pwd) {
-            // // Obtener los datos inputs
-            // $dni = $this->request->getPost("registroDni");
-            // $nombre = $this->request->getPost("registroNom");   
-            // $email = $this->request->getPost("registroEmail");  // Esto el Input type email que se encarga de ello 
-            // $tele = $this->request->getPost("registroTele");
-            // $pwd = $this->request->getPost("registroPwd");
             // Comprobar si haya insertado todos los datos
             if (empty($dni) || empty($nombre) || empty($email) || empty($tele) || empty($pwd)) {
                 return "Deberías rellenar todos los datos!";
@@ -47,7 +41,7 @@
             }
             // Password
             if (strlen($pwd) < 8) {
-                return "Contraseña debil! \t 'Tiene que tener 8 characteres'";
+                return "Contraseña debil! \t 'Tiene que tener exactamente 8 characteres'";
             }
             return "bien";
         }
@@ -77,7 +71,11 @@
                     } else {
                         // Si el cliente existe, guardo su DNI en la session
                         $this->session->set('dniCliente', $dniCliente);
-                        // Cargo los nav y side bar con datos y cambio la vista principal a una de bienvenida por eje
+                        // Cargo los nav y side bar con datos y cambio la vista principal a una de bienvenida
+                        // Envio el nomCliente en flashdata
+                        $datosCli = $this->modeloClientes->dameCliente($dniCliente);
+                        $this->session->setFlashdata(['nomCliente' =>  $datosCli->nombre]);
+                        return redirect()->to(site_url('autenticacion'));
                     }
                 }            
             }
@@ -127,5 +125,16 @@
             return view("v_login");
         }
 
+
+        public function cerrarSession() {
+            // Eliminar la variable de session
+            session()->remove('dniCliente');
+            // Redirigir a la página de autenticación
+            return redirect()->to(site_url('autenticacion'));
+        }
+
+        
     }
+
+
 ?>

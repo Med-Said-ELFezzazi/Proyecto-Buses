@@ -30,14 +30,13 @@
 
     // Función que añade un cliente a la BD
     public function agregarCliente($dni, $nom, $email, $tele, $pwd) {
-        $insertado = $this->insert([
+        return $this->insert([
                         'dni' => strtoupper($dni),
                         'nombre' => $nom,
                         'email' => $email,
                         'telefono' => $tele,
                         'password' => $pwd
                     ]);
-        return $insertado ? true : false;
     }
 
     // Función que verifica si un dni ya existe en la BD o no
@@ -47,6 +46,30 @@
             ->where('dni', $dni)
             ->first();
         return $cliente ? true : false;
+    }
+
+
+    // Función que devuelve datos de un cliente formato objeto pasandole su dni
+    public function dameCliente($dni) {
+        $cliente = $this
+        ->select('nombre, email, telefono, password')
+        ->where('dni', $dni)
+        ->first();
+        return $cliente;
+    }
+
+
+    // Función que actualiza datos de un cliente
+    public function actualizarCliente($dni, $nom, $email, $tele, $pwd) {
+        return $this
+            ->where('dni', $dni)
+            ->set([
+            'nombre' => $nom,
+            'email' => $email,
+            'telefono' => $tele,
+            'password' => $pwd
+            ])
+            ->update();
     }
 }
 ?>

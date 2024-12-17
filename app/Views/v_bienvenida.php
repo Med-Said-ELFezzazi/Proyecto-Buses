@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenidos</title>
+    <link rel="stylesheet" href="<?= base_url('css/styleBienvenida.css'); ?>">
+</head>
+<body>
+    <div id="divPrin">
+        <h1>Bienvenido de nuevo, <?= $nomCliente; ?> </h1>
+        AQUI luego pongo los servicios que tendra el cliente con igual fotos descriptivas en formato cartas o algo asi ... 'los servicios q ofrece la pagina al cliente'
+        y si es un Admin pues tendra otras cosas destintas pero seria el mismo concepto 
+        y claro voy a arreglar el css tambn 
+
+    </div>
+    
+</body>
+</html>
