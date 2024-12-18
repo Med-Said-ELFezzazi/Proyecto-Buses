@@ -72,9 +72,8 @@
                         // Si el cliente existe, guardo su DNI en la session
                         $this->session->set('dniCliente', $dniCliente);
                         // Cargo los nav y side bar con datos y cambio la vista principal a una de bienvenida
-                        // Envio el nomCliente en flashdata
                         $datosCli = $this->modeloClientes->dameCliente($dniCliente);
-                        $this->session->setFlashdata(['nomCliente' =>  $datosCli->nombre]);
+                        $this->session->set('cliente', $datosCli);  // Guardo datos del cliente en la session
                         return redirect()->to(site_url('autenticacion'));
                     }
                 }            

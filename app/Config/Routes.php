@@ -7,6 +7,9 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
+// Modo sin sesión 'el visitante puede consultar viajes,horario,tarifas
+$routes->get('/visitante', ''); //bienvenida maybe
+
 // Autenticación de clientes
 $routes->match(['GET', 'POST'], '/autenticacion', 'CLogin::index');
 

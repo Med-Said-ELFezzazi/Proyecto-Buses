@@ -16,7 +16,7 @@
             <!-- Las vistas no tienen acceso directo a session (se hace asi o pasando el dato en el controlador) -->
             <?php if (session()->get('dniCliente')):?>
                 <!-- Cargo la vista de bienvenida con el nombre del cliente ' -->
-                <?= view('v_bienvenida', ['nomCliente' => session()->getFlashdata('nomCliente')]); ?>
+                <?= view('v_bienvenida'); ?>
             <?php else: ?>
                 <div class="container auth-container">
                     <!-- Msg error -->

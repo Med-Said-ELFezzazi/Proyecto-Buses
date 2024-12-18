@@ -8,12 +8,15 @@
 </head>
 <body>
     <div id="divPrin">
-        <h1>Bienvenido de nuevo, <?= $nomCliente; ?> </h1>
+        <h1>Bienvenido de nuevo, <?= session()->get('cliente')->nombre; ?> </h1>
         AQUI luego pongo los servicios que tendra el cliente con igual fotos descriptivas en formato cartas o algo asi ... 'los servicios q ofrece la pagina al cliente'
         y si es un Admin pues tendra otras cosas destintas pero seria el mismo concepto 
         y claro voy a arreglar el css tambn 
+        Y si es un visitante sin session otras cosas tmb
 
     </div>
+
+
     
 </body>
 </html>

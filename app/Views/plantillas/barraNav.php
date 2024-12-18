@@ -15,9 +15,14 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="nav navbar-nav ml-auto">   <!-- ml-->
+        <?php if (!session()->get('dniCliente')):?>
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="#">Lineas y horarios</a>
             </li>
+        <?php endif; ?>
+            <!-- <li class="nav-item active">
+                <a class="nav-link" href="#">Home</a>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="#">About</a>
             </li>
