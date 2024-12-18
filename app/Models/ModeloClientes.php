@@ -61,15 +61,31 @@
 
     // Función que actualiza datos de un cliente
     public function actualizarCliente($dni, $nom, $email, $tele, $pwd) {
-        return $this
-            ->where('dni', $dni)
-            ->set([
-            'nombre' => $nom,
-            'email' => $email,
-            'telefono' => $tele,
-            'password' => $pwd
-            ])
-            ->update();
+        $datosActualizados = [];
+        // Solo agregar al array los campos que no esten vacios
+        if (!empty($nom)) {
+            $datosActualizados['nombre'] = $nom;
+        }
+        if (!empty($email)) {
+            $datosActualizados['email'] = $email;
+        }
+        if (!empty($tele)) {
+            $datosActualizados['telefono'] = $tele;
+        }
+        if (!empty($pwd)) {
+            $datosActualizados['password'] = $pwd;
+        }
+        // Verificar si hay campos para actualizar
+        if (!empty($datosActualizados)) {
+            $actualizado = $this
+                ->where('dni', $dni)
+                ->set($datosActualizados)
+                ->update();
+            return $actualizado;
+        }
+        // Si no hay datos para actualizar
+        return false;
     }
+    
 }
 ?>
