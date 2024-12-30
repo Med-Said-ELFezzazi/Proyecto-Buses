@@ -15,11 +15,10 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="nav navbar-nav ml-auto">   <!-- ml-->
-        <?php if (!session()->get('dniCliente')):?>
+        <?php if (session()->get('dniCliente')):?>
             <li class="nav-item active">
                 <a class="nav-link" href="#">Lineas y horarios</a>
             </li>
-        <?php endif; ?>
             <!-- <li class="nav-item active">
                 <a class="nav-link" href="#">Home</a>
             </li> -->
@@ -32,6 +31,23 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Contact</a>
             </li>
+        <?php endif; ?>
+            <!-- El caso de que no sin session -->
+        <?php
+            // Obtener el ultimo segmento de la url
+            $ultimoSegmento = explode('/', current_url());
+            $ultimoSegmento = end($ultimoSegmento);            
+            if ($ultimoSegmento == 'visitante') {
+                // el visitante puede consultar viajes/horario,tarifas
+                echo "<li class='nav-item active'>";
+                    echo "<a class='nav-link' href='".current_url()."/lineasHorarios'>Líneas y horarios</a>";
+                echo "</li>";
+                echo "<li class='nav-item active'>";
+                    echo "<a class='nav-link' href='".current_url()."/tarifas'>Tarifas</a>";
+                echo "</li>";
+            }        
+        ?>
+
         </ul>
         </div>
     </div>

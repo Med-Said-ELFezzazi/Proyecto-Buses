@@ -7,8 +7,10 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
-// Modo sin sesión 'el visitante puede consultar viajes,horario,tarifas
-$routes->get('/visitante', ''); //bienvenida maybe
+// Modo sin sesión
+$routes->get('/visitante', 'CLogin::modoVisitante');
+$routes->get('/visitante/lineasHorarios', 'CLogin::');
+$routes->get('/visitante/tarifas', 'CLogin::');
 
 // Autenticación de clientes
 $routes->match(['GET', 'POST'], '/autenticacion', 'CLogin::index');
@@ -19,4 +21,3 @@ $routes->get('cerrarSession', 'CLogin::cerrarSession');
 // Modificar datos cliente
 $routes->get('modificarCliente', 'CClientes::modificarCliente'); //pasar a la vista modificar
 $routes->post('modificarCliente', 'CClientes::modificarCliente'); //Click submit modificar
-

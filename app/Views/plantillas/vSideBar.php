@@ -3,9 +3,21 @@
     <ul class="list-unstyled components mb-5">
         <!-- Sin session -->
         <?php if (!session()->get('dniCliente')):?>
-            <li class="active">
-                <a href="<?= site_url('/visitante'); ?>"><span class="fa fa-lock"></span>Sin sesión</a>
-            </li>
+            <!-- Si ya haya pulsado 'sin session' -->
+            <?php
+                $ultimoSegmento = explode('/', current_url());
+                $ultimoSegmento = end($ultimoSegmento);
+            ?>
+            <?php if ($ultimoSegmento == 'visitante'): ?>
+                <li class="active">
+                    <a href="<?= site_url('/autenticacion'); ?>"><span class="fa fa-lock"></span>Iniciar sesión</a>
+                </li>
+            <?php else: ?>
+                <li class="active">
+                    <a href="<?= site_url('/visitante'); ?>"><span class="fa fa-lock"></span>Sin sesión</a>
+                </li>
+            <?php endif; ?>
+            
         <?php else: ?>
             <!-- Con session -->
             <!-- <li class="active">   Poner el nombre del cliente marcado por ej -->
@@ -20,14 +32,14 @@
             <li>
                 <a href="#"><span class="fa fa-cogs"></span> Services</a>
             </li>  -->
+            <li class="text-center">
+                Sesión abierta por
+                <span class="fa fa-user"></span>
+                <b><?= session()->get('cliente')->nombre; ?></b>
+            </li>
+            <hr>
 
-            <li>
-                <b>Sesión abierta por</b>
-            </li>
-            <li>
-                <b>Sesión abierta por</b>
-            </li>
-    
+
             <!-- Apartado de modificar los datos del cliente -->
             <li>
                 <a href="<?= site_url('/modificarCliente'); ?>"><span class="fa fa-edit"></span> Modificar datos personales</a>
