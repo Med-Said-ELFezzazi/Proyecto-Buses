@@ -97,27 +97,32 @@
                     
                     echo '<h2 class="titSeccion">Resultados</h2>';
                     echo '<div>';
-                        $fechaFormateada = date('d', strtotime($fechaSeleccionada))."/".ucfirst(mb_strtolower(date('M', strtotime($fechaSeleccionada))))."/".date('Y', strtotime($fechaSeleccionada));                    
-                        echo '<strong>Resultados encontrados en la fecha: '.$fechaFormateada.'  '.$origenNombre.' - '.$destinoNombre.'<span style="visibility: hidden;">Este texto es invisible pero ocupa espacio Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span></strong>';
-                    
-                        echo '<table class="table table-striped table-bordered">';
-                            echo '<thead>';
-                                echo '<tr>';
-                                    echo '<th>Origen</th>';
-                                    echo '<th>Salida</th>';
-                                    echo '<th>Destino</th>';
-                                    echo '<th>Llegada</th>';
-                                echo '</tr>';
-                            echo '</thead>';
-                            foreach($datosRutas as $ruta) {
-                                echo '<tr>';
-                                    echo '<td>'.$ruta->ciudad_origin.'</td>';
-                                    echo '<td>'.date('H:i', strtotime($ruta->hora_salida)).'</td>';
-                                    echo '<td>'.$ruta->ciudad_destino.'</td>';
-                                    echo '<td>'.date('H:i', strtotime($ruta->hora_llegada)).'</td>';
-                                echo '</tr>';
-                            }                        
-                        echo '</table>';
+                        if (count($datosRutas) == 0) {
+                            echo '<strong><span style="visibility: hidden;">Este texto es invisible pero ocupa espacio Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span></strong>';
+                            echo '<div class="alert alert-warning">No hay rutas disponibles con los datos seleccionados!</div>';
+
+                        } else {
+                            $fechaFormateada = date('d', strtotime($fechaSeleccionada))."/".ucfirst(mb_strtolower(date('M', strtotime($fechaSeleccionada))))."/".date('Y', strtotime($fechaSeleccionada));                    
+                            echo '<strong>Resultados encontrados en la fecha: '.$fechaFormateada.'  '.$origenNombre.' - '.$destinoNombre.'<span style="visibility: hidden;">Este texto es invisible pero ocupa espacio Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span></strong>';
+                            echo '<table class="table table-striped table-bordered">';
+                                echo '<thead>';
+                                    echo '<tr>';
+                                        echo '<th>Origen</th>';
+                                        echo '<th>Salida</th>';
+                                        echo '<th>Destino</th>';
+                                        echo '<th>Llegada</th>';
+                                    echo '</tr>';
+                                echo '</thead>';
+                                foreach($datosRutas as $ruta) {
+                                    echo '<tr>';
+                                        echo '<td>'.$ruta->ciudad_origin.'</td>';
+                                        echo '<td>'.date('H:i', strtotime($ruta->hora_salida)).'</td>';
+                                        echo '<td>'.$ruta->ciudad_destino.'</td>';
+                                        echo '<td>'.date('H:i', strtotime($ruta->hora_llegada)).'</td>';
+                                    echo '</tr>';
+                                }                        
+                            echo '</table>';
+                        }
                     echo '</div>';                    
                 } else {
                     // Mostrar msg de error
