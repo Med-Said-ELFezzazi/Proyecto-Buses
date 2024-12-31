@@ -30,4 +30,9 @@ class CVisitante extends BaseController {
             'datosRutas' => $datosRutas
         ]);
     }
+
+
+    public function tarifas() {
+        return view('v_tarifas');
+    }
 }

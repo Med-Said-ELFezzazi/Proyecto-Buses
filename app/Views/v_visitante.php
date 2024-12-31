@@ -13,31 +13,26 @@
 
 <body>
     <div class="row">
-        <?php
+        <!-- <php
             $ultimoSegmento = explode('/', current_url());
             $ultimoSegmento = end($ultimoSegmento);
-        ?>
+        ?> -->
 
         <!-- Lineas y horiarios -->
-        <?php if ($ultimoSegmento == 'lineasHorarios'): ?>
-        <!-- <php if (isset($ciudadesOrg) && !empty($ciudadesOrg)): ?> -->
-        <?php echo view('v_horarios'); ?>
-            <!-- Tarifas -->
-        <?php elseif ($ultimoSegmento == 'tarifas'): ?>
+        <!-- <php if ($ultimoSegmento == 'lineasHorarios'): ?> -->
+        <?php if (isset($ciudadesOrg)): ?>
+            <?php echo view('v_horarios'); ?>
+        <!-- Tarifas -->
+        <!-- <php elseif ($ultimoSegmento == 'tarifas'): ?> -->
 
         <!-- Instrucciones/Bienvenida -->
         <?php else: ?>
             <div>
                 <h1>Bienvenidos</h1>
-                <p>Para realizar una consulta sobre una línea seleccione, 
-                    en primer lugar, la fecha en la que realizará el recorrido.
-                    Pulsando en el icono cuadrado bajo la palabra "fecha", 
-                    aparecerán en pantalla los calendarios correspondientes al 
-                    mes en curso y al siguiente. Seleccione la fecha que desee 
-                    simplemente pulsando sobre ella.</p>
+                <p><b>Hola!</b> Estas en modo visitante 'sin sesión' <br>
+                    Puedes consultar los horarios, rutas y tarifas de autobuses.</p>
+                </p>
             </div>
-
-
         <?php endif; ?>
     </div>
 

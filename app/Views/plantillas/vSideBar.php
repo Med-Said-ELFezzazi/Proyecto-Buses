@@ -8,7 +8,8 @@
                 $ultimoSegmento = explode('/', current_url());
                 $ultimoSegmento = end($ultimoSegmento);
             ?>
-            <?php if ($ultimoSegmento == 'visitante'): ?>
+            <?php if ($ultimoSegmento == 'visitante' || $ultimoSegmento == 'lineasHorarios'
+                || $ultimoSegmento == 'tarifas'): ?>
                 <li class="active">
                     <a href="<?= site_url('/autenticacion'); ?>"><span class="fa fa-lock"></span>Iniciar sesión</a>
                 </li>

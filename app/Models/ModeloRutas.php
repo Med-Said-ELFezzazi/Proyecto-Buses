@@ -17,28 +17,7 @@
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
-
-    // Función que obtiene ciudades_origins disponibles pasandole la fecha 
-    /*public function ciudadesOriginDisponibles($fecha) {
-        $ciudades = $this
-            ->select('id_ruta, ciudad_origin')
-            ->where('fecha', $fecha)
-            ->groupBy('ciudad_origin')
-            ->findAll();
-        return $ciudades;
-    }
-
-    // Función que obtiene ciudades_destino disponibles pasandole la fecha y ciudad_origin
-    public function ciudadesDestinoDisponibles($fecha, $ciudad_origin) {
-        $ciudades = $this
-            ->select('id_ruta, ciudad_destino')
-            ->where('fecha', $fecha)
-            ->where('ciudad_origin', $ciudad_origin)
-            ->groupBy('ciudad_destino')
-            ->findAll();
-        return $ciudades;
-    }*/
-
+    // Obtener todas ciudades de origen
     public function ciudadesOrg() {
         $ciudadesOrg = $this
             ->select('id_ruta, ciudad_origin')
@@ -47,6 +26,7 @@
         return $ciudadesOrg;
     }
 
+    // Obtener todas ciudades de destino
     public function ciudadesDes() {
         $ciudadesDes = $this->select('id_ruta, ciudad_destino')
                     ->groupBy('ciudad_destino')
@@ -54,6 +34,7 @@
         return $ciudadesDes;
     }
 
+    // Obtener datos de rutas con datos seleccionados
     public function datosRutas($fecha, $ciudad_origin, $ciudad_destino) {
         $datosRutas = $this
             ->where('fecha', $fecha)
@@ -62,8 +43,7 @@
             ->orderBy('hora_salida', 'ASC')
             ->findAll();
         return $datosRutas;
-    }
-    
+    }    
     
 }
 ?>

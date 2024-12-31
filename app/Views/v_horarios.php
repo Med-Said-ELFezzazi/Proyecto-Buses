@@ -136,8 +136,6 @@
                 echo '<div>';
                     echo '<p>Para realizar una consulta sobre una línea seleccione, en primer lugar, la fecha en la que realizará el recorrido. Pulsando en el icono cuadrado bajo la palabra "fecha", aparecerán en pantalla los calendarios correspondientes al mes en curso y al siguiente. Seleccione la fecha que desee simplemente pulsando sobre ella.</p>';
                     echo '<p class="MT20">A continuación, seleccione la localidad de origen en el menú desplegable y, para finalizar, seleccione, del mismo modo, la localidad de destino.</p>';
-                    echo '<p class="MT20">La respuesta del sistema es automática en función de los datos que ha facilitado permitiéndole, al mismo tiempo, obtener información adicional sobre las opciones de retorno para ese trayecto -pulse "ver vuelta"-, opciones de viaje para el día anterior y posterior al seleccionado -pulse "ver día anterior" o "ver día siguiente"- así como las paradas intermedias del trayecto -pulsando sobre el icono de la derecha de cada trayecto-.</p>';
-                    echo '<p class="MT20">Por último, puede imprimir estos resultados pulsando sobre el icono de la impresora en la cabecera de la página o sobre el texto "imprimir resultados" al pie de la misma. Recuerde que cuando haya múltiples resultados a su consulta, estos aparecerán en varias páginas consecutivas.</p>';
                 echo '</div>';
             }
         ?>
