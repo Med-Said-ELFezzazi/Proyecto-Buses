@@ -33,6 +33,7 @@ class CVisitante extends BaseController {
 
 
     public function tarifas() {
-        return view('v_tarifas');
+        $datosTarifas = $this->modeloRutas->datosTarifas();
+        return view('v_visitante', ['datosTarifas' => $datosTarifas]);
     }
 }

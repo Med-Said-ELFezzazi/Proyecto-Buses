@@ -43,7 +43,16 @@
             ->orderBy('hora_salida', 'ASC')
             ->findAll();
         return $datosRutas;
-    }    
+    }
+    
+    // Obtener datos de tarifas segund ciudad origin
+    public function datosTarifas() {
+        $datosTarifas = $this
+            ->select('ciudad_origin, ciudad_destino, tarifa')
+            ->orderBy('ciudad_origin', 'ASC')
+            ->findAll();
+        return $datosTarifas;
+    }
     
 }
 ?>

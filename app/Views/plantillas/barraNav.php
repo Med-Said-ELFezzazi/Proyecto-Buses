@@ -37,22 +37,30 @@
             // Obtener el ultimo segmento de la url
             $ultimoSegmento = explode('/', current_url());
             $ultimoSegmento = end($ultimoSegmento);            
-            if ($ultimoSegmento == 'visitante' || $ultimoSegmento == 'lineasHorarios'
-                || $ultimoSegmento == 'tarifas') {
+            $validSegments = ['visitante', 'lineasHorarios', 'tarifas'];
+            if (in_array($ultimoSegmento, $validSegments)) {
                 // el visitante puede consultar viajes/horario,tarifas
+                // Click sobre horarios
                 echo "<li class='nav-item active'>";
                     $urlHorarios = current_url();
-                    if (strpos($urlHorarios, 'lineasHorarios') === false) {
+                    if (strpos($urlHorarios, 'lineasHorarios') !== false) {
+                        $urlHorarios = $urlHorarios;
+                    } elseif(strpos($urlHorarios, 'tarifas') !== false) {
+                        $urlHorarios = str_replace('tarifas', 'lineasHorarios', $urlHorarios);
+                    } else {
                         $urlHorarios = $urlHorarios."/lineasHorarios";
                     }
                     echo "<a class='nav-link' href='".$urlHorarios."'>Líneas y horarios</a>";
                 echo "</li>";
 
+                // Click sobre tarifas
                 echo "<li class='nav-item active'>";
                     // Cambiar lineasHorarios por tarifas
                     $urlTarifas = current_url();
                     if (strpos($urlTarifas, 'lineasHorarios') !== false) {
                         $urlTarifas = str_replace('lineasHorarios', 'tarifas', $urlTarifas);
+                    } elseif(strpos($urlTarifas, 'tarifas') !== false) {
+                        $urlTarifas = $urlTarifas;
                     } else {
                         $urlTarifas = $urlTarifas."/tarifas";
                     }

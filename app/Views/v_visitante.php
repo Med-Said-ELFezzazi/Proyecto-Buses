@@ -13,18 +13,18 @@
 
 <body>
     <div class="row">
-        <!-- <php
+        <?php
             $ultimoSegmento = explode('/', current_url());
             $ultimoSegmento = end($ultimoSegmento);
-        ?> -->
+        ?>
 
         <!-- Lineas y horiarios -->
         <!-- <php if ($ultimoSegmento == 'lineasHorarios'): ?> -->
         <?php if (isset($ciudadesOrg)): ?>
             <?php echo view('v_horarios'); ?>
         <!-- Tarifas -->
-        <!-- <php elseif ($ultimoSegmento == 'tarifas'): ?> -->
-
+        <?php elseif ($ultimoSegmento == 'tarifas'): ?>
+            <?php echo view('v_tarifas'); ?>
         <!-- Instrucciones/Bienvenida -->
         <?php else: ?>
             <div>

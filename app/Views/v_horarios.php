@@ -143,6 +143,3 @@
     </div>
 
 </div>
-
-
-<!-- <script src="<= base_url('js/loadHorarios.js') ?>"></script> -->
