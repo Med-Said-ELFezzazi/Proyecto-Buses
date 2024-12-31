@@ -133,12 +133,12 @@
         }
 
 
-        public function modoVisitante() {
-            // Eliminar la variable de session
-            session()->remove('dniCliente');
-            // el visitante puede consultar viaje/horario,tarifas
-            return view("v_visitante");
-        }
+        // public function modoVisitante() {
+        //     // Eliminar la variable de session
+        //     session()->remove('dniCliente');
+        //     // el visitante puede consultar viaje/horario,tarifas
+        //     return view("v_visitante");
+        // }
 
         
     }

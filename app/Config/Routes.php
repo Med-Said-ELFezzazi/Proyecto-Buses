@@ -8,8 +8,14 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 
 // Modo sin sesión
-$routes->get('/visitante', 'CLogin::modoVisitante');
-$routes->get('/visitante/lineasHorarios', 'CLogin::');
+// $routes->get('/visitante', 'CLogin::modoVisitante');
+$routes->get('/visitante', 'CVisitante::modoVisitante');
+$routes->get('/visitante/lineasHorarios', 'CVisitante::lineasHorarios');    // pasar a la vista lineasHorarios
+$routes->post('/visitante/lineasHorarios', 'CVisitante::lineasHorarios');    // Submit consulta de horarios
+
+
+
+
 $routes->get('/visitante/tarifas', 'CLogin::');
 
 // Autenticación de clientes
