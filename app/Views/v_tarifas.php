@@ -1,38 +1,58 @@
 <h1>Tarifas</h1>
-<br><br>
-<div class="row">
-    <table class="table">
-        <tbody>
-            <tr>
-                <th class="headerTH">Recorrido</th>
-                <th class="headerTH">Trifa</th>
-                <th class="headerTH">Reservar</th>
 
-            </tr>
+<div class="container">
         <?php
-            // var_dump($datosTarifas);
-            foreach ($datosTarifas as $tarifa) {
-                // echo "<div class='tarjeta'>";
-                // echo "<h3>$tarifa->ciudad_origin → $tarifa->ciudad_destino</h3>";
-                // echo "<p>Tarifa: $tarifa->tarifa €</p>";
-                // echo "<button>Reservar</button>";
-                // echo "</div>";
+            $arrCiudadesExistentes = [];
+            foreach ($datosTarifas as $index => $viaje) {
+                if (!in_array($viaje->ciudad_origin, $arrCiudadesExistentes)) {
+                    // Cerrar la tabla anterior si existe
+                    if (!empty($arrCiudadesExistentes)) {
+                        echo "</tbody>";
+                        echo "</table>";
+                    }
+                    // Añadir la ciudad al array
+                    array_push($arrCiudadesExistentes, $viaje->ciudad_origin);
+                    // Poner el titulo
+                    echo "<h3>Salidas de " . $viaje->ciudad_origin . "</h3>";
+                    echo '<table class="table">';
+                        echo '<thead>';
+                            echo '<tr>';
+                                echo '<th class="headerTH">Recorrido</th>';
+                                echo '<th class="headerTH">Tarifa</th>';
+                                echo '<th class="headerTH">Reservar</th>';
+                            echo '</tr>';
+                        echo "</thead>";
+                    echo '<tbody>';
+                }
+
+                // Poner datos tarifas
                 echo "<tr>";
                     echo "<td class='casillas'>";
-                        $tarifa->ciudad_origin . " → " . $tarifa->ciudad_destino;
+                        echo $viaje->ciudad_origin . " → " . $viaje->ciudad_destino;
                     echo "</td>";
-
+        
                     echo "<td class='casillas'>";
-                    
+                        echo $viaje->tarifa . " €";
                     echo "</td>";
-
+        
                     echo "<td class='casillas'>";
-                        echo "<button>Reservar</button>";
+                        // Submit que lleva a la autenticación 
+                        echo form_open('/autenticacion', ['method' => 'post']);                            
+                        echo form_input([
+                                'type' => 'submit',
+                                'class' => 'btn btn-primary',
+                                'value' => 'Reservar',
+                                'style' => 'background-color: #4CAF50; border: none;'
+                            ]);
+                        echo form_close();
                     echo "</td>";
                 echo "</tr>";
+                
+                // Cerrar la tabla si es la última iteración
+                if ($index == count($datosTarifas) - 1) {
+                    echo "</tbody>";
+                    echo "</table>";
+                }
             }
-
         ?>
-        </tbody>
-    </table>
 </div>

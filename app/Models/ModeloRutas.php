@@ -48,6 +48,7 @@
     // Obtener datos de tarifas segund ciudad origin
     public function datosTarifas() {
         $datosTarifas = $this
+            ->distinct()
             ->select('ciudad_origin, ciudad_destino, tarifa')
             ->orderBy('ciudad_origin', 'ASC')
             ->findAll();
@@ -55,4 +56,3 @@
     }
     
 }
-?>

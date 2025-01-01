@@ -20,7 +20,7 @@
                             'value' => $fechaSeleccionada,
                             'min' => $fecha_actual,
                             'max' => $fecha_max,
-                            'class' => 'form-control',
+                            'class' => 'form-control'
                         ]);
                     ?>
                 </p>
