@@ -18,13 +18,30 @@
                     <div class="card-body">
                         <?= form_open('', ['method' => 'post'])?>
                         <div class="row mb-3">
-                            <div class="col-md-6">Fecha de Ida
-                                <!-- <label class="form-label">Fecha de Ida</label> -->
-                                <input type="date" class="form-control">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha de Ida</label>
+                                <?php
+                                    $fecha_actual = date('Y-m-d');
+                                    echo form_input([
+                                        'type' => 'date',
+                                        'name' => 'fecha_ida',
+                                        'class' => 'form-control',
+                                        'value' => $fecha_actual,
+                                        'min' => $fecha_actual
+                                    ]);
+                                ?>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Fecha de Vuelta</label>
-                                <input type="date" class="form-control">
+                                <?php
+                                    echo form_input([
+                                        'type' => 'date',
+                                        'name' => 'fecha_vuelta',
+                                        'class' => 'form-control',
+                                        'value' => $fecha_actual,
+                                        'min' => $fecha_actual
+                                    ]);
+                                ?>
                             </div>
                         </div>
                             <div class="row mb-3">
@@ -82,15 +99,6 @@
                                         ?>
                                         <label class="form-check-label" >Asignar asiento aleatorio</label>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Acepto los términos y condiciones
-                                    </label>
                                 </div>
                             </div>
 
