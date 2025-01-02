@@ -13,13 +13,20 @@ $routes->get('/visitante/lineasHorarios', 'CVisitante::lineasHorarios');    // p
 $routes->post('/visitante/lineasHorarios', 'CVisitante::lineasHorarios');    // Submit consulta de horarios
 $routes->get('/visitante/tarifas', 'CVisitante::tarifas');      // pasar a la vista tarifas
 
-
-// Autenticación de clientes
+// Modo con sesión 'Cliente'
+// Autenticación
 $routes->match(['GET', 'POST'], '/autenticacion', 'CLogin::index');
+// Modificar datos cliente
+$routes->get('modificarCliente', 'CClientes::modificarCliente'); //pasar a la vista modificar
+$routes->post('modificarCliente', 'CClientes::modificarCliente'); //Click submit modificar
+// Consultar horarios
+$routes->get('/lineasHorarios', 'CVisitante::lineasHorarios');
+// Consultar tarifas
+$routes->get('/tarifas', 'CVisitante::tarifas');
+// Reservar
+$routes->post('/reserva', 'CReserva::reservar');
+
 
 // Cerrar sesión
 $routes->get('cerrarSession', 'CLogin::cerrarSession');
 
-// Modificar datos cliente
-$routes->get('modificarCliente', 'CClientes::modificarCliente'); //pasar a la vista modificar
-$routes->post('modificarCliente', 'CClientes::modificarCliente'); //Click submit modificar

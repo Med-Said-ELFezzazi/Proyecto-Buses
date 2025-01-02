@@ -36,8 +36,15 @@
                     echo "</td>";
         
                     echo "<td class='casillas'>";
+                    $url = '';
+                    if (!session()->get('dniCliente')) {
                         // Submit que lleva a la autenticación 
-                        echo form_open('/autenticacion', ['method' => 'post']);                            
+                        $url .= '/autenticacion';
+                    } else {
+                        // Submit que lleva para reservar
+                        $url .= '/reserva';
+                    }
+                        echo form_open($url, ['method' => 'post']);                            
                         echo form_input([
                                 'type' => 'submit',
                                 'class' => 'btn btn-primary',

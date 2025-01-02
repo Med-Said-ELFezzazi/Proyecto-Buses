@@ -10,7 +10,7 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-8 offset-md-2 text-center">
-                    <h1 class="display-4">Bienvenido de nuevo <strong><?= session()->get('cliente')->nombre; ?></strong></h1>
+                    <h1 class="display-6">Bienvenido de nuevo <b style="color: blue;">'<?= session()->get('cliente')->nombre; ?>'</b></h1>
                     <!-- <p class="lead">Tu compañero de confianza para un transporte cómodo y seguro.</p> -->
                 </div>
             </div>
@@ -40,7 +40,7 @@
                             <p class="card-text">
                                 Accede a toda la información de viajes
                             </p>
-                            <a href="#" class="btn btn-primary">Ver Horarios</a>
+                            <a href="<?= site_url('/lineasHorarios'); ?>" class="btn btn-primary">Ver Horarios</a>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                             <p class="card-text">
                                 Consulta las tarifas de todas la lineas
                             </p>
-                            <a href="#" class="btn btn-primary">Consultar Tarifas</a>
+                            <a href="<?= site_url('/tarifas'); ?>" class="btn btn-primary">Consultar Tarifas</a>
                         </div>
                     </div>
                 </div>
