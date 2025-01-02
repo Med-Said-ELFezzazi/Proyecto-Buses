@@ -36,12 +36,26 @@
                                 <?php
                                     echo form_input([
                                         'type' => 'date',
+                                        'id' => 'fecha_vuelta',
                                         'name' => 'fecha_vuelta',
                                         'class' => 'form-control',
                                         'value' => $fecha_actual,
                                         'min' => $fecha_actual
                                     ]);
                                 ?>
+                                <div class="form-check mt-2">
+                                    <?php
+                                    // checkbox por defecto checkeado
+                                        echo form_input([
+                                            'type' => 'checkbox',
+                                            'name' => 'soloIda',
+                                            'id' => 'soloIda',
+                                            'class' => 'form-check-input',
+                                            'checked' => 'checked'
+                                        ]);                                                
+                                    ?>
+                                    <label class="form-check-label" >Solo ida</label>
+                                </div>
                             </div>
                         </div>
                             <div class="row mb-3">
@@ -101,8 +115,14 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <button type="submit" class="btn btn-primary">Buscar Viajes</button>
+                            <?php
+                                echo form_input([
+                                    'type' => 'submit',
+                                    'name' => 'verServicios',
+                                    'value' => 'Ver Servicios',
+                                    'class' => 'btn btn-primary'
+                                ]);
+                            ?>
                         <?= form_close(); ?>
                     </div>
                 </div>
@@ -110,6 +130,19 @@
         </div>
     </div>
 
+    <!-- Al hacer click sobre ver servicios -->
+    <?php
+        if (isset($_POST['verServicios'])) {
+            echo "clicked";
+
+        }
+    
+    
+    ?>
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= base_url('/js/reservas.js'); ?>"></script>
 </body>
 </html>
