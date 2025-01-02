@@ -16,6 +16,8 @@ $routes->get('/visitante/tarifas', 'CVisitante::tarifas');      // pasar a la vi
 // Modo con sesión 'Cliente'
 // Autenticación
 $routes->match(['GET', 'POST'], '/autenticacion', 'CLogin::index');
+// Home 'bienvenida'
+$routes->get('/home', 'CLogin::cargarHome');
 // Modificar datos cliente
 $routes->get('modificarCliente', 'CClientes::modificarCliente'); //pasar a la vista modificar
 $routes->post('modificarCliente', 'CClientes::modificarCliente'); //Click submit modificar

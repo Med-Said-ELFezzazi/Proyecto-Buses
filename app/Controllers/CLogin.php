@@ -125,6 +125,15 @@
         }
 
 
+        public function cargarHome() {
+            // Comprobar si el cliente esta autenticado
+            if (!session()->get('dniCliente')) {
+                return redirect()->to(site_url('autenticacion'));
+            }
+            return view("v_home");
+        }
+
+
         public function cerrarSession() {
             // Eliminar la variable de session
             session()->remove('dniCliente');

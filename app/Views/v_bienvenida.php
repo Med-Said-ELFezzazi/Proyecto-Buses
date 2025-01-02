@@ -26,7 +26,7 @@
                             <p class="card-text">
                                 Reserva tus billetes de manera fácil/rápida
                             </p>
-                            <a href="#" class="btn btn-primary">Reservar Ahora</a>
+                            <a href="<?= site_url('/reserva'); ?>" class="btn btn-primary">Reservar Ahora</a>
                         </div>
                     </div>
                 </div>

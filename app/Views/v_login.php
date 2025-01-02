@@ -15,8 +15,10 @@
         <body>
             <!-- Las vistas no tienen acceso directo a session (se hace asi o pasando el dato en el controlador) -->
             <?php if (session()->get('dniCliente')):?>
-                <!-- Cargo la vista de bienvenida con el nombre del cliente ' -->
-                <?= view('v_bienvenida'); ?>
+                <!-- Cambiar el enlace de autenticacion a home -->
+                <script>
+                    window.location.href = "<?= site_url('/home'); ?>";
+                </script>
             <?php else: ?>
                 <div class="container auth-container">
                     <!-- Msg error -->
