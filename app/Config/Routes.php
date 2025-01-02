@@ -26,7 +26,7 @@ $routes->get('/lineasHorarios', 'CVisitante::lineasHorarios');
 // Consultar tarifas
 $routes->get('/tarifas', 'CVisitante::tarifas');
 // Reservar
-$routes->post('/reserva', 'CReserva::reservar');
+$routes->match(['GET', 'POST'], '/reserva', 'CReserva::reservar');
 
 
 // Cerrar sesión
