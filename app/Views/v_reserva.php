@@ -1,3 +1,13 @@
+<?php
+    // Al hacer click sobre ver servicios 
+    $error = '';
+    if (isset($_POST['verServicios'])) {
+        // Validación de origen y destino
+        if ($_POST['ciudad_origen'] == $_POST['ciudad_destino']) {
+            $error .= 'El origen y destino no pueden ser iguales';
+        }
+    }   
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,9 +17,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-
     <div class="container my-5">
         <div class="row justify-content-center">
+            <?php if ($error != ''): ?>
+                <div class="alert alert-danger">
+                    <?= $error; ?>
+                </div>
+            <?php endif; ?>
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header bg-primary text-white text-center">
@@ -62,7 +76,7 @@
                                 <div class="col-md-6">
                                     <label class="form-label">Origen</label>
                                     <?php 
-                                        echo form_dropdown('ciudad_origen', $ciudadesOrg, null, [
+                                        echo form_dropdown('ciudad_origen', $ciudadesOrg, $_POST['ciudad_origen'] ?? null, [
                                                 'class' => 'form-select'
                                             ]);                                 
                                     ?>
@@ -70,7 +84,7 @@
                                 <div class="col-md-6">
                                     <label class="form-label">Destino</label>
                                     <?php 
-                                        echo form_dropdown('ciudad_destino', $ciudadesDes, null, [
+                                        echo form_dropdown('ciudad_destino', $ciudadesDes, $_POST['ciudad_destino'] ?? null, [
                                                 'class' => 'form-select'
                                             ]);                                 
                                     ?>
@@ -98,8 +112,7 @@
                                         'name' => 'asiento',
                                         'id' => 'asiento',
                                         'class' => 'form-control',
-                                        'min' => '1',
-                                        'value' => '1'
+                                        'min' => '1'
                                     ]);
                                     ?>
                                     <div class="form-check mt-2">
@@ -107,8 +120,9 @@
                                             echo form_input([
                                                 'type' => 'checkbox',
                                                 'name' => 'asientoAleatorio',
+                                                'id' => 'asientoAleatorio',
                                                 'class' => 'form-check-input',
-                                                'value' => '0'
+                                                'checked' => 'checked'
                                             ]);                                                
                                         ?>
                                         <label class="form-check-label" >Asignar asiento aleatorio</label>
@@ -130,15 +144,6 @@
         </div>
     </div>
 
-    <!-- Al hacer click sobre ver servicios -->
-    <?php
-        if (isset($_POST['verServicios'])) {
-            echo "clicked";
-
-        }
-    
-    
-    ?>
 
 
 
