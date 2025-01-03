@@ -54,5 +54,13 @@
             ->findAll();
         return $datosTarifas;
     }
+
+    // Función que el número de reservas de un viaje
+    public function numeroReservas($id_ruta) {
+        $numReservas = $this
+            ->where('id_ruta', $id_ruta)
+            ->countAllResults();
+        return $numReservas;
+    }
     
 }

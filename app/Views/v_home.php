@@ -13,7 +13,7 @@
         </head>
         <body>
             <?php 
-                if (isset($ciudadesOrg) || isset($ciudadesDes)) {
+                if (isset($ciudadesOrg) || isset($ciudadesDes) || isset($servicios)) {
                     echo view('v_reserva');    
                 } else {
                     echo view('v_bienvenida');

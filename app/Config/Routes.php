@@ -22,11 +22,12 @@ $routes->get('/home', 'CLogin::cargarHome');
 $routes->get('modificarCliente', 'CClientes::modificarCliente'); //pasar a la vista modificar
 $routes->post('modificarCliente', 'CClientes::modificarCliente'); //Click submit modificar
 // Consultar horarios
-$routes->get('/lineasHorarios', 'CVisitante::lineasHorarios');
+$routes->match(['GET', 'POST'], '/lineasHorarios', 'CVisitante::lineasHorarios');
 // Consultar tarifas
 $routes->get('/tarifas', 'CVisitante::tarifas');
 // Reservar
 $routes->match(['GET', 'POST'], '/reserva', 'CReserva::reservar');
+$routes->match(['GET', 'POST'], '/reserva/servicios', 'CReserva::servicios');
 
 
 // Cerrar sesión

@@ -1,3 +1,4 @@
+// Función que muestra/oculta el campo fecha según el estado del checkbox
 function toggleFechaVuelta() {
     const checkbox = document.getElementById('soloIda');
     const fechaVuelta = document.getElementById('fecha_vuelta');
@@ -9,6 +10,7 @@ function toggleFechaVuelta() {
     }
 }
 
+// Función que habilita/des el campo asiento según el estado del checkbox
 function toggleNumAsiento() {
     const checkbox = document.getElementById('asientoAleatorio');
     const inputAsiento = document.getElementById('asiento');
@@ -21,6 +23,8 @@ function toggleNumAsiento() {
         inputAsiento.disabled = false;
     }
 }
+
+// Ejecutar al cargar la página
 document.addEventListener('DOMContentLoaded', function () {
     const checkbox = document.getElementById('soloIda');
     checkbox.addEventListener('change', toggleFechaVuelta);

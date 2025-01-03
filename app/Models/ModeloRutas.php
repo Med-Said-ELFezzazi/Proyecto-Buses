@@ -54,5 +54,15 @@
             ->findAll();
         return $datosTarifas;
     }
+
+
+    // Función que obtiene la matricula del bus de la ruta pasada en el param
+    public function matriculaRuta($id_ruta) {
+        $matricula = $this
+            ->select('matricula')
+            ->where('id_ruta', $id_ruta)
+            ->first();
+        return $matricula->matricula;
+    }
     
 }
