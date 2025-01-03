@@ -143,7 +143,7 @@
                                         ?>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">Número de Asiento</label>
+                                        <label class="form-label">Número de Asiento <i>'Considera de elegir asiento aleatoria al comprar más de un billete'</i></label>
                                         <?php
                                         echo form_input([
                                             'type' => 'number',

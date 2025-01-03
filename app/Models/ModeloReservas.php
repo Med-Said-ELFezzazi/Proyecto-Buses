@@ -63,4 +63,15 @@
         return $numReservas;
     }
     
+
+    // Función que inserta una reserva
+    public function agregarReserva($dni, $id_ruta, $num_asiento) {
+        return $this->insert([
+                // 'dni' => session()->get('dniCliente'),   // eso no pq Admin va a poder reservar con dnis de clientes
+                'dni' => $dni,
+                'id_ruta' => $id_ruta,
+                'num_asiento' => $num_asiento,
+                'fecha_reserva' => date('Y-m-d H:i:s')
+            ]);
+    }
 }

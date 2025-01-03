@@ -1,3 +1,11 @@
+<?php
+    if (isset($_POST['comprar'])) {
+        // Comprueba 
+        echo view('v_reserva');    
+    }
+
+?>
+
 <div>
     <table class="info-table">
         <tr >
@@ -36,8 +44,12 @@
                         echo "</td>";
                         echo "<td>" . date('H:i', strtotime($servicio['hora_llegada'])) . "</td>";
                         echo "<td>" . $servicio['precio'] . "€</td>";
-                        echo "<td>" . ($servicio['hayPlazas'] ? 'Disponible' : 'No disponible') . "</td>";
-                        // echo "<td>" . $servicio['plazas_libres'] . "</td>";
+                        if (!$servicio['hayPlazas']) { // Si no hay plazas
+                            echo "<td>No disponible</td>";
+                        } else {
+                            echo "<td>" . $servicio['plazas_libres'] . "</td>";
+
+                        }
                     echo "</tr>";
                 }       
 
@@ -55,9 +67,5 @@
             ]); 
         echo '</div>';
         form_close(); 
-
-            
-
-
     ?>
 </div>
