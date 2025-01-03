@@ -1,17 +1,8 @@
 <?php
     // Al hacer click sobre ver servicios 
-    // $error = '';
-    // $mostrarServicios = false;
-    // if (isset($_POST['verServicios'])) {
-    //     // Validación de origen y destino
-    //     if ($_POST['ciudad_origen'] == $_POST['ciudad_destino']) {
-    //         $error .= 'El origen y destino no pueden ser iguales';
-    //     } else {
-    //         $mostrarServicios = true;
-    //     }
-    // } 
     $mostrarServicios = false;
     $error = '';
+    $numBilletesSel = 1;
     if (isset($_POST['verServicios'])) {
         // Validación de origen y destino
         if ($_POST['ciudad_origen'] == $_POST['ciudad_destino']) {
@@ -19,14 +10,11 @@
         }
         else if (!isset($_POST['asientoAleatorio']) && $_POST['asiento'] == '') {
             $error .= 'Debe introducir un número de asiento o marcar la casilla de asiento aleatorio';
-        }else {
+        } else {
             $mostrarServicios = true;
-    
-            // Redirigir al URL actual más /servicios
-            // $urlActual = $_SERVER['PHP_SELF']; // Obtiene el script actual
-            // header("Location: {$urlActual}/servicios");
-            // exit(); // Termina el script después de redirigir
         }
+
+        $numBilletesSel = $_POST['Numbilletes'];
     }
     
 ?>
@@ -150,7 +138,7 @@
                                                 'name' => 'Numbilletes',
                                                 'class' => 'form-control',
                                                 'min' => '1',
-                                                'value' => '1'
+                                                'value' => $numBilletesSel
                                             ]);
                                         ?>
                                     </div>

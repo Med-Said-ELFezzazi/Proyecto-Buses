@@ -31,21 +31,6 @@
                 $ciudadesDes[$ciudad->ciudad_destino] = $ciudad->ciudad_destino;
             }
 
-            // Si haya consultado los servicios, paso los datos correspondientes
-            // if (isset($_POST['ciudad_origen']) && isset($_POST['ciudad_destino']) && isset($_POST['fecha'])) {
-            //     $ciudad_origen = $_POST['ciudad_origen'];
-            //     $ciudad_destino = $_POST['ciudad_destino'];
-            //     $fecha = $_POST['fecha'];
-            //     $servicios = $this->modeloRutas->datosRutas($fecha, $ciudad_origen, $ciudad_destino);
-            //     return view("v_reserva", [
-            //         'ciudadesOrg' => $ciudadesOrg,
-            //         'ciudadesDes' => $ciudadesDes,
-            //         'servicios' => $servicios,
-            //         'origen' => $ciudad_origen,
-            //         'destino' => $ciudad_destino
-            //     ]);
-            // }
-
             return view("v_home", [
                 'ciudadesOrg' => $ciudadesOrg,
                 'ciudadesDes' => $ciudadesDes,
