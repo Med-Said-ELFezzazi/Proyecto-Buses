@@ -213,6 +213,12 @@
                     'billetes' => $billetes,
                     'asiento' => $asiento
                 ]);*/
+                $numAsiento = null;    // Siginifica que hay q generar uno random
+                if (!isset($_POST['asientoAleatorio'])) {
+                    $numAsiento = $_POST['asiento'];
+                }
+                // Guardar e n session
+                session()->set('numAsiento', $numAsiento);
                 echo view('v_servicios');
                 // echo view('v_servicios', $datosViajes);
             }

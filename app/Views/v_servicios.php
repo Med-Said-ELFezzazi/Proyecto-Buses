@@ -1,7 +1,14 @@
 <?php
     if (isset($_POST['comprar'])) {
         // Comprueba 
-        echo view('v_reserva');    
+        // echo view('v_reserva');
+        
+        // echo "Comprando...";
+
+        // var_dump('clicked');
+
+
+        // view ('tstCompra.php');
     }
 
 ?>
@@ -31,15 +38,18 @@
         </thead>
         <tbody>
             <?php
-                form_open('', ['method' => 'post']);
+                echo form_open(site_url().'/reserva/servicios/compra', ['method' => 'post']);
+                $esPrimero = true;  // Para poner el primer radio selected
                 foreach ($servicios as $servicio) {
                     echo "<tr>";
                         echo "<td>";
                             echo form_input([
                                 'type' => 'radio',
                                 'name' => 'servicioSel[]',
-                                'value' => $servicio['id_ruta']
+                                'value' => $servicio['id_ruta'],
+                                'checked' => $esPrimero ? 'checked' : false
                             ]);
+                            $esPrimero = false;
                             echo date('H:i', strtotime($servicio['hora_salida']));
                         echo "</td>";
                         echo "<td>" . date('H:i', strtotime($servicio['hora_llegada'])) . "</td>";
@@ -66,6 +76,6 @@
                 'class' => 'btn btn-success'
             ]); 
         echo '</div>';
-        form_close(); 
+        echo form_close(); 
     ?>
 </div>

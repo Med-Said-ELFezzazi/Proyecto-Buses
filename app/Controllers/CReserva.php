@@ -89,7 +89,18 @@
                 'servicios' => $servicios
             ]);
         }
-        
+
+        // Función que registra la compra en la BD y manada correo al cliente
+        public function realizarCompra() {
+            // Obtener datos de la compra
+            $id_ruta = $_POST['servicioSel'];
+            
+
+            $reservaGrabada = $this->modeloReservas->agregarReserva(
+                session()->get('dniCliente'), $id_ruta, session()->get('numAsiento'));
+
+            return view('v_home', ['compraOk' => $reservaGrabada]);
+        }        
        
 } 
 

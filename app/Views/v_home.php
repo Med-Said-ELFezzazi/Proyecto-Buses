@@ -14,7 +14,9 @@
         <body>
             <?php 
                 if (isset($ciudadesOrg) || isset($ciudadesDes) || isset($servicios)) {
-                    echo view('v_reserva');    
+                    echo view('v_reserva');
+                } else if (isset($compraOk)) {
+                    echo view('v_compra');   
                 } else {
                     echo view('v_bienvenida');
                 }               
