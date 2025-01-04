@@ -4,7 +4,7 @@
     use App\Models\ModeloReservas;
     use App\Models\ModeloRutas;
     use App\Models\ModeloBuses;
-    // use stdClass;
+    use Config\Services;
 
     class CReserva extends BaseController {
 
@@ -90,16 +90,51 @@
             ]);
         }
 
+
+        public function enviarEmailCompra($emailCliente) {
+            // Cuerpo del mensaje
+            $mensaje = "<h1 style='color: green;'>Compra realizada correctamente</h1>
+                        <p>Datos de la reserva:</p>
+                        <table>
+                            <thead>IDA</thead>
+                        
+                        </table>";
+
+
+            $emailService = Services::emailService();
+            $resultado = $emailService->sendEmail(
+                $emailCliente,
+                'Confirmación de compra',
+                '<h1>Gracias por su compra</h1><p>Recuerde llevar su billete impreso o en su dispositivo móvil.</p>'
+                );
+
+
+            return $resultado;
+        }
+
         // Función que registra la compra en la BD y manada correo al cliente
         public function realizarCompra() {
             // Obtener datos de la compra
             $id_ruta = $_POST['servicioSel'];
+            // Asiento luego... 
             
-
+            // Insertar la reserva en la BD
             $reservaGrabada = $this->modeloReservas->agregarReserva(
                 session()->get('dniCliente'), $id_ruta, session()->get('numAsiento'));
 
-            return view('v_home', ['compraOk' => $reservaGrabada]);
+            // Enviar correo al cliente 'methodo enviarcorreo
+            $emailService = Services::emailService();
+            $resultado = $emailService->sendEmail(
+                'elfezzazimohamedsaid@gmail.com',
+                'Asunto de Prueba',
+                '<h1>Este es un mensaje de prueba</h1><p>Saludos desde tu aplicación web.</p>'
+            );
+
+
+            return view('v_home', ['compraOk' => $reservaGrabada,
+                        'emailOk' => $resultado]);
+                        
+            // return view('v_home', ['emailOk' => $resultado]);
         }        
        
 } 

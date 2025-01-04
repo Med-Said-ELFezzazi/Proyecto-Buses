@@ -19,11 +19,8 @@
                     echo view('v_compra');   
                 } else {
                     echo view('v_bienvenida');
-                }               
-            
-            
-            ?>
-            
+                }
+            ?>            
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>                                                                                <!--Guardando tab activo en localstorage 'NO VA' -->
         </body>

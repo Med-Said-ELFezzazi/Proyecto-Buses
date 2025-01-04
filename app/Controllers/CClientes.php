@@ -43,31 +43,5 @@
             }
         }
 
-
-
-        // public function lineasHorarios() {
-        //     $ciudadesOrg = $this->modeloRutas->ciudadesOrg();
-        //     $ciudadesDes = $this->modeloRutas->ciudadesDes();
-        //     // Obtener datos de rutas
-        //     $fechaSeleccionada = $_POST['fecha'] ?? date('Y-m-d');
-        //     $ciudadOrgSel = $_POST['origenSel'] ?? '';
-        //     $ciudadDesSel = $_POST['destinoSel'] ?? '';
-        //     $datosRutas = $this->modeloRutas->datosRutas($fechaSeleccionada, $ciudadOrgSel, $ciudadDesSel);
-        //     return view('v_home', [
-        //         'ciudadesOrg' => $ciudadesOrg,
-        //         'ciudadesDes' => $ciudadesDes,
-        //         'datosRutas' => $datosRutas
-        //     ]);
-        // }
-    
-    
-        // public function tarifas() {
-        //     $datosTarifas = $this->modeloRutas->datosTarifas();
-        //     return view('v_home', ['datosTarifas' => $datosTarifas]);
-        // }
-
-
-
-
     }
 ?>
