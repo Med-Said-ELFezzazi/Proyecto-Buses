@@ -74,4 +74,19 @@
                 'fecha_reserva' => date('Y-m-d H:i:s')
             ]);
     }
+
+    // Función que obtiene idTicket de una reserva
+    public function dameIdTicket($dni, $id_ruta, $fecha_reserva) {
+        $idTicket = $this
+            ->select('id_ticket')
+            ->where('dni', $dni)
+            ->where('id_ruta', $id_ruta)
+            ->where("DATE(fecha_reserva)", $fecha_reserva) // Comparar solo la fecha
+            ->orderBy('id_ticket', 'DESC') // Para obtener el último
+            ->first();
+        
+        return $idTicket ? $idTicket->id_ticket : null;
+    }
+    
+
 }

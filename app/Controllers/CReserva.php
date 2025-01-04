@@ -4,6 +4,7 @@
     use App\Models\ModeloReservas;
     use App\Models\ModeloRutas;
     use App\Models\ModeloBuses;
+    use App\Models\ModeloClientes;
     use Config\Services;
 
     class CReserva extends BaseController {
@@ -11,12 +12,15 @@
         protected $modeloReservas;
         protected $modeloRutas;
         protected $modeloBuses;
+        protected $modeloClientes;
 
         public function __construct() {
             $this->modeloReservas = new ModeloReservas();
             $this->modeloRutas = new ModeloRutas();
             $this->modeloBuses = new ModeloBuses();
+            $this->modeloClientes = new ModeloClientes();
         }
+
 
         public function reservar() {
             // Pasar todas las distintas ciudades origen y destino
@@ -36,6 +40,8 @@
                 'ciudadesDes' => $ciudadesDes,
             ]);
         }
+        
+
         public function servicios() {
             // Obtener datos a buscar
             // $fechaIda = $_POST['fecha_ida'];
@@ -90,25 +96,49 @@
             ]);
         }
 
-
-        public function enviarEmailCompra($emailCliente) {
+        // Función que envía un correo al cliente con los detalles de la compra
+        public function enviarEmailCompra($emailCliente, $fechaIda, $horaSalidaIda, $origen, $destino,$numTicket, $asiento) {
+            // Formatear la hora a H:i
+            $horaSalidaIda = date('H:i', strtotime($horaSalidaIda));
             // Cuerpo del mensaje
-            $mensaje = "<h1 style='color: green;'>Compra realizada correctamente</h1>
-                        <p>Datos de la reserva:</p>
-                        <table>
-                            <thead>IDA</thead>
-                        
-                        </table>";
-
+            $cuerpo = "<h1 style='color: green;'>Compra realizada correctamente</h1>
+                <p>Datos de la reserva:</p><br><br>
+                <div style='border: 2px dashed black; width: 450px; padding: 10px;'>
+                    <table border='0' style='border-collapse: collapse; width: 100%;'>
+                    <tbody>
+                        <tr>
+                            <td alight='center' colspan='100'><b><i>IDA</i></b></td>
+                        </tr>
+                        <tr>
+                            <td>FECHA</td>
+                            <td align='left'><b>{$fechaIda}</b></td>
+                            <td>&nbsp;</td>
+                            <td>HORA</td>
+                            <td align='left'><b>{$horaSalidaIda}</b></td>
+                        </tr>
+                        <tr>
+                            <td>SERVICIO</td>
+                            <td align='left' colspan='100'><b>{$origen} - {$destino}</b></td>
+                        </tr>
+                        <tr>
+                            <td>NUM.ASIENTO</td>
+                            <td align='left'><b>{$asiento}</b></td>
+                            <td>NUM.TICKET</td>
+                            <td align='left'><b>{$numTicket}</b></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                <br>
+                <b><i>Muchas gracias por la compra ¡Buen viaje!</i></b>
+            ";
 
             $emailService = Services::emailService();
             $resultado = $emailService->sendEmail(
                 $emailCliente,
-                'Confirmación de compra',
-                '<h1>Gracias por su compra</h1><p>Recuerde llevar su billete impreso o en su dispositivo móvil.</p>'
+                'Confirmacion de compra',
+                $cuerpo
                 );
-
-
             return $resultado;
         }
 
@@ -119,22 +149,25 @@
             // Asiento luego... 
             
             // Insertar la reserva en la BD
+            $asiento = session()->get('numAsiento');
             $reservaGrabada = $this->modeloReservas->agregarReserva(
-                session()->get('dniCliente'), $id_ruta, session()->get('numAsiento'));
+                session()->get('dniCliente'), $id_ruta, $asiento);
 
             // Enviar correo al cliente 'methodo enviarcorreo
-            $emailService = Services::emailService();
-            $resultado = $emailService->sendEmail(
-                'elfezzazimohamedsaid@gmail.com',
-                'Asunto de Prueba',
-                '<h1>Este es un mensaje de prueba</h1><p>Saludos desde tu aplicación web.</p>'
-            );
+            $datosRuta = $this->modeloRutas->dameDatosRuta($id_ruta);
+
+            $emailCliente = $this->modeloClientes->dameCliente(session()->get('dniCliente'))->email;
+            $fechaIda = $datosRuta->fecha;
+            $horaSalidaIda = $datosRuta->hora_salida;
+            $origen = $datosRuta->ciudad_origin;
+            $destino = $datosRuta->ciudad_destino;
+            $numTicket = $this->modeloReservas->dameIdTicket(session()->get('dniCliente'), $id_ruta, date('Y-m-d'));
+            
+            $emailEnviado = $this->enviarEmailCompra($emailCliente, $fechaIda, $horaSalidaIda, $origen, $destino,$numTicket, $asiento);
 
 
             return view('v_home', ['compraOk' => $reservaGrabada,
-                        'emailOk' => $resultado]);
-                        
-            // return view('v_home', ['emailOk' => $resultado]);
+                        'emailOk' => $emailEnviado]);
         }        
        
 } 

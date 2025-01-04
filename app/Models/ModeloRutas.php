@@ -64,5 +64,13 @@
             ->first();
         return $matricula->matricula;
     }
-    
+
+
+    // Función que obtiene datos de una ruta pasandole id_ruta
+    public function dameDatosRuta($id_ruta) {
+        $datosRuta = $this
+            ->where('id_ruta', $id_ruta)
+            ->first();
+        return $datosRuta;
+    }    
 }
