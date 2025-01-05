@@ -35,3 +35,6 @@ $routes->post('/reserva/servicios/compra', 'CReserva::realizarCompra');
 // Cerrar sesión
 $routes->get('cerrarSession', 'CLogin::cerrarSession');
 
+// ADMIN
+$routes->get('/admin/home', 'CAdmin::index');
+

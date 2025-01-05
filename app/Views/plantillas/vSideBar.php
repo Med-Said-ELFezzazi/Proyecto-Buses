@@ -1,9 +1,40 @@
 <nav id="sidebar" class="active">
     <h1><a href="index.html" class="logo">BUS</a></h1>
     <ul class="list-unstyled components mb-5">
+        <!-- session abierta -->
+        <?php if (session()->get('dniCliente')):?>
+            <li class="text-center">
+                    Sesión abierta por
+                    <span class="fa fa-user"></span>
+                    <b><?= session()->get('cliente')->nombre; ?></b>
+            </li>
+            <hr>
+
+            <!-- Apartado de modificar los datos del cliente -->
+            <li>
+                <a href="<?= site_url('/modificarCliente'); ?>"><span class="fa fa-edit"></span> Modificar datos personales</a>
+            </li>
+
+            <!-- El cierre de la session -->
+            <li><!-- luego class de 'a' class="btn btn-danger" -->
+                <a href="<?= site_url('/cerrarSession'); ?>"><span class="fa fa-sign-out-alt "></span>Cerrar sesión</a>
+            </li>
+
+        <!-- Session Admin  -->
+        <?php elseif (session()->get('admin')): ?>
+            <li class="text-center">
+                    Sesión abierta por
+                    <span class="fa fa-user"></span>
+                    <b>Administrador</b>
+                </li>
+                <hr>
+
+                <li>
+                    <a href="<?= site_url('/cerrarSession'); ?>"><span class="fa fa-sign-out-alt "></span>Cerrar sesión</a>
+                </li>
+                
         <!-- Sin session -->
-        <?php if (!session()->get('dniCliente')):?>
-            <!-- Si ya haya pulsado 'sin session' -->
+        <?php else: ?>
             <?php
                 $ultimoSegmento = explode('/', current_url());
                 $ultimoSegmento = end($ultimoSegmento);
@@ -19,40 +50,7 @@
                 </li>
             <?php endif; ?>
             
-        <?php else: ?>
-            <!-- Con session -->
-            <!-- <li class="active">   Poner el nombre del cliente marcado por ej -->
-                <!-- <a href="#"><span class="fa fa-home"></span> Home</a>
-            </li>
-            <li>
-                <a href="#"><span class="fa fa-user"></span> About</a>
-            </li>
-            <li>
-                <a href="#"><span class="fa fa-sticky-note"></span> Blog</a>
-            </li>
-            <li>
-                <a href="#"><span class="fa fa-cogs"></span> Services</a>
-            </li>  -->
-            <li class="text-center">
-                Sesión abierta por
-                <span class="fa fa-user"></span>
-                <b><?= session()->get('cliente')->nombre; ?></b>
-            </li>
-            <hr>
-
-
-            <!-- Apartado de modificar los datos del cliente -->
-            <li>
-                <a href="<?= site_url('/modificarCliente'); ?>"><span class="fa fa-edit"></span> Modificar datos personales</a>
-            </li>
-
-            <!-- El cierre de la session -->
-            <li><!-- luego class de 'a' class="btn btn-danger" -->
-                <a href="<?= site_url('/cerrarSession'); ?>"><span class="fa fa-sign-out-alt "></span>Cerrar sesión</a>
-            </li>
         <?php endif; ?>
-
-
     </ul>
 
     <div class="footer">

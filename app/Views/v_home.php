@@ -18,6 +18,8 @@
                     echo view('v_reserva');
                 } else if (isset($compraOk) && isset($emailOk)) {
                     echo view('v_compra');   
+                } else if (session()->get('admin')) {
+                    echo "admin hada";
                 } else {
                     echo view('v_bienvenida');
                 }

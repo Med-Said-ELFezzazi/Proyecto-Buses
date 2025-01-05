@@ -52,6 +52,13 @@
             if ($this->request->getPost("submitLogin")) {
                 $email = $this->request->getPost("loginEmail");
                 $pwd = $this->request->getPost("loginPassword");
+                // Caso de credenciales admin
+                if ($email == 'admin@admin.com' && $pwd == 'admin') {
+                    // Guardar en la session
+                    $this->session->set('admin', 'administrador');
+                    // Llevar a la vista admin
+                    return redirect()->to(site_url('admin/home'));
+                }
                 // Primero compruebo si haya introducido algo en los campos
                 if (empty($email) || empty($pwd)) {
                     // Envio el msg de error
@@ -76,7 +83,7 @@
                         $this->session->set('cliente', $datosCli);  // Guardo datos del cliente en la session
                         return redirect()->to(site_url('autenticacion'));
                     }
-                }            
+                }          
             }
 
             // Al click registrar
@@ -135,8 +142,9 @@
 
 
         public function cerrarSession() {
-            // Eliminar la variable de session
+            // Eliminar la variable de session 'cliente/admin'
             session()->remove('dniCliente');
+            session()->remove('admin');
             // Redirigir a la página de autenticación
             return redirect()->to(site_url('autenticacion'));
         }
