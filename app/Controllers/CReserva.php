@@ -21,23 +21,30 @@
             $this->modeloClientes = new ModeloClientes();
         }
 
+        // Función que devuelve un array de todas las ciudades pasandole tipo 'origen/destino'
+        private function obtenerCiudades($tipo) {
+            $ciudades = ($tipo === 'origen') 
+                ? $this->modeloRutas->ciudadesOrg()
+                : $this->modeloRutas->ciudadesDes();
+            
+            $resultado = [];
+            foreach ($ciudades as $ciudad) {
+                $campo = ($tipo === 'origen') ? 'ciudad_origin' : 'ciudad_destino';
+                $resultado[$ciudad->$campo] = $ciudad->$campo;
+            }
+            return $resultado;
+        }
+        
 
+        // Función que pasa todas las ciudades 'origen/destino' para cargar en la v_reserva
         public function reservar() {
             // Pasar todas las distintas ciudades origen y destino
-            $origins = $this->modeloRutas->ciudadesOrg();
-            $ciudadesOrg = [];
-            foreach($origins as $ciudad) {
-                $ciudadesOrg[$ciudad->ciudad_origin] = $ciudad->ciudad_origin;
-            }
-            $destinos = $this->modeloRutas->ciudadesDes();
-            $ciudadesDes = [];
-            foreach($destinos as $ciudad) {
-                $ciudadesDes[$ciudad->ciudad_destino] = $ciudad->ciudad_destino;
-            }
+            $ciudadesOrg = $this->obtenerCiudades('origen');
+            $ciudadesDes = $this->obtenerCiudades('destino');
 
             return view("v_home", [
-                'ciudadesOrg' => $ciudadesOrg,
-                'ciudadesDes' => $ciudadesDes,
+            'ciudadesOrg' => $ciudadesOrg,
+            'ciudadesDes' => $ciudadesDes,
             ]);
         }
         
@@ -49,21 +56,11 @@
             $fecha = $_POST['fecha_ida'];
             $origen = $_POST['ciudad_origen'];
             $destino = $_POST['ciudad_destino'];
-            $Numbilletes = $_POST['Numbilletes'];
-            // $asiento = $_POST['asiento']; no importa ahora
-            
+            $Numbilletes = $_POST['Numbilletes'];            
             
             // Para rellenar los campos de origen y destino
-            $origins = $this->modeloRutas->ciudadesOrg();
-            $ciudadesOrg = [];
-            foreach($origins as $ciudad) {
-                $ciudadesOrg[$ciudad->ciudad_origin] = $ciudad->ciudad_origin;
-            }
-            $destinos = $this->modeloRutas->ciudadesDes();
-            $ciudadesDes = [];
-            foreach($destinos as $ciudad) {
-                $ciudadesDes[$ciudad->ciudad_destino] = $ciudad->ciudad_destino;
-            }
+            $ciudadesOrg = $this->obtenerCiudades('origen');
+            $ciudadesDes = $this->obtenerCiudades('destino');
             // DAtos de rutas segun los filtros seleccionados
             $datosRuta = $this->modeloRutas->datosRutas($fecha, $origen, $destino);
             $servicios = [];
@@ -190,17 +187,25 @@
 
         // Función que registra la compra en la BD y manada correo al cliente
         public function realizarCompra() {
-            // Comprobar si haya seleccionado un radio valido 'no dishablitado'
+            // Comprobar si haya seleccionado un radio dishablitado o habiltado
             if (!isset($_POST['servicioSel'])) {
                 // Vuelvo a la vista con mensaje de error
-            } else {
+                $msgErrorLleno = "Lo sentimos, el bus está lleno! <br> Considera bajar la cantidad de billetes.";
+                // PAsar ciudades origen y destino para q no da error
+                $ciudadesOrg = $this->obtenerCiudades('origen');
+                $ciudadesDes = $this->obtenerCiudades('destino');
+                return view('v_home', ['ciudadesOrg' => $ciudadesOrg,
+                                    'ciudadesDes' => $ciudadesDes,
+                                    'msgErrorLleno' => $msgErrorLleno]);
+
+            } else {    // Radio button habilitado
                 // Obtener datos de la compra
                 $id_ruta = $_POST['servicioSel'];
-                // Asiento luego... 
-                
+
                 $numBilletesSel = session()->get('numBilletes');
                 $asiento = session()->get('numAsientoInsertado'); // NULL/Numero
                 $arrAsientosRandom = [];
+
                 if ($asiento == null) {     // Generar asientos random
                     // Generar asiento random
                     $arrAsientosRandom = $this->generarAsientoRandom($id_ruta, $numBilletesSel);
@@ -223,17 +228,16 @@
                 $arrNumTicket = $this->modeloReservas->dameIdTicket(session()->get('dniCliente'), $id_ruta, date('Y-m-d'));
                 
                 $emailEnviado = $this->enviarEmailCompra($emailCliente, $fechaIda, $horaSalidaIda, 
-                                $origen, $destino,$arrNumTicket, $arrAsientosRandom);
+                                $origen, $destino,$arrNumTicket);
     
     
                 return view('v_home', ['compraOk' => $reservaGrabada,
                             'emailOk' => $emailEnviado]);
-
             }
+        }    
 
-        }        
        
-} 
+    } 
 
 
 ?>

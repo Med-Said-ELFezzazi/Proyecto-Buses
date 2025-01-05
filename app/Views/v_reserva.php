@@ -7,8 +7,7 @@
         // Validación de origen y destino
         if ($_POST['ciudad_origen'] == $_POST['ciudad_destino']) {
             $error .= 'El origen y destino no pueden ser iguales';
-        }
-        else if (!isset($_POST['asientoAleatorio']) && $_POST['asiento'] == '') {
+        } else if (!isset($_POST['asientoAleatorio']) && $_POST['asiento'] == '') {
             $error .= 'Debe introducir un número de asiento o marcar la casilla de asiento aleatorio';
         } else {
             $mostrarServicios = true;
@@ -185,34 +184,7 @@
         <!-- Mostrar servicios -->
         <?php 
             if ($mostrarServicios) {
-                // Fecha vuelta
-                /*$fecha_vuelta = null;       // Significa que no hay vuelta
-                if (!isset($_POST['soloIda'])) {
-                    $fecha_vuelta = $_POST['fecha_vuelta'];
-                }
-                // FEcha ida
-                $fecha_ida = $_POST['fecha_ida'];
-                // Origin
-                $origen = $_POST['ciudad_origen'];
-                // Destino
-                $destino = $_POST['ciudad_destino'];
-                // Número de billetes
-                $billetes = $_POST['Numbilletes'];
                 // Número de asiento
-                $asiento = null;    // Siginifica que hay q generar uno random
-                if (!isset($_POST['asientoAleatorio'])) {
-                    $asiento = $_POST['asiento'];
-                }
-                // var_dump($fecha_ida, $fecha_vuelta, $origen, $destino, $billetes, $asiento);
-                // Llamar a la vista de servicios disponibles pasando los datos
-                $datosViajes = ([
-                    'fecha_ida' => $fecha_ida,
-                    'fecha_vuelta' => $fecha_vuelta,
-                    'origen' => $origen,
-                    'destino' => $destino,
-                    'billetes' => $billetes,
-                    'asiento' => $asiento
-                ]);*/
                 $numAsiento = null;    // Siginifica que hay q generar uno random
                 if (!isset($_POST['asientoAleatorio'])) {
                     $numAsiento = $_POST['asiento'];
@@ -224,9 +196,18 @@
                 session()->set('numBilletes', $numBilletesSel);
 
                 echo view('v_servicios');
-                // echo view('v_servicios', $datosViajes);
             }
         ?>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <?php if (isset($msgErrorLleno)): ?>
+                <div class="alert alert-danger text-center" role="alert">
+                <strong>Error!</strong> <?php echo $msgErrorLleno; ?>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="<?= base_url('/js/reservas.js'); ?>"></script>

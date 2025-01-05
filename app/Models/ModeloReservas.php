@@ -64,8 +64,10 @@
     }
     
 
-    // Función que inserta una reserva
+    // Función que inserta una reserva Y DEVUELVE true o false
     public function agregarReserva($dni, $id_ruta, $arrAsientos) {
+        $this->db->transStart();
+    
         foreach ($arrAsientos as $asiento) {
             $this->insert([
                 'dni' => $dni,
@@ -74,7 +76,12 @@
                 'fecha_reserva' => date('Y-m-d H:i:s')
             ]);
         }
+    
+        $this->db->transComplete();
+    
+        return $this->db->transStatus();
     }
+    
 
     // Función que obtiene idTicket/num_asiento de una reserva    
     public function dameIdTicket($dni, $id_ruta, $fecha_reserva) {

@@ -13,7 +13,8 @@
         </head>
         <body>
             <?php 
-                if (isset($ciudadesOrg) || isset($ciudadesDes) || isset($servicios)) {
+                if ((isset($ciudadesOrg) && isset($ciudadesDes)) ||
+                     isset($servicios) || isset($msgError)) {
                     echo view('v_reserva');
                 } else if (isset($compraOk) && isset($emailOk)) {
                     echo view('v_compra');   
