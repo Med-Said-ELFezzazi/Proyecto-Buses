@@ -65,28 +65,39 @@
     
 
     // Función que inserta una reserva
-    public function agregarReserva($dni, $id_ruta, $num_asiento) {
-        return $this->insert([
-                // 'dni' => session()->get('dniCliente'),   // eso no pq Admin va a poder reservar con dnis de clientes
+    public function agregarReserva($dni, $id_ruta, $arrAsientos) {
+        foreach ($arrAsientos as $asiento) {
+            $this->insert([
                 'dni' => $dni,
                 'id_ruta' => $id_ruta,
-                'num_asiento' => $num_asiento,
+                'num_asiento' => $asiento,
                 'fecha_reserva' => date('Y-m-d H:i:s')
             ]);
+        }
     }
 
-    // Función que obtiene idTicket de una reserva
+    // Función que obtiene idTicket/num_asiento de una reserva    
     public function dameIdTicket($dni, $id_ruta, $fecha_reserva) {
-        $idTicket = $this
-            ->select('id_ticket')
+        $tickets = $this
+            ->select('id_ticket, num_asiento')
             ->where('dni', $dni)
             ->where('id_ruta', $id_ruta)
             ->where("DATE(fecha_reserva)", $fecha_reserva) // Comparar solo la fecha
-            ->orderBy('id_ticket', 'DESC') // Para obtener el último
-            ->first();
+            ->get()
+            ->getResultArray(); // Devuelve el resultado en formato array
         
-        return $idTicket ? $idTicket->id_ticket : null;
+        // Devolver un array de resultados
+        return empty($tickets) ? [] : $tickets;
+    }  
+        
+
+    // Función que obtiene los numeros de asientos de una ruta pasada en el param
+    public function asientosReservadosRuta($id_ruta) {
+        $asientos = $this
+            ->select('num_asiento')
+            ->where('id_ruta', $id_ruta)
+            ->findAll();
+        return $asientos;       // Devuelve un array de objetos 'num asiento'
     }
-    
 
 }

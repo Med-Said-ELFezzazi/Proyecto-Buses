@@ -65,7 +65,6 @@
                             <h3 class="mb-0">Reserva tu Viaje</h3>
                         </div>
                         <div class="card-body">
-                            <!-- <= form_open(current_url().'/servicios', ['method' => 'post']); ?> -->
                             <?= form_open(site_url().'/reserva/servicios', ['method' => 'post']); ?>
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -143,7 +142,8 @@
                                         ?>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">Número de Asiento <i>'Considera de elegir asiento aleatoria al comprar más de un billete'</i></label>
+                                        <label class="form-label">Número de Asiento <i>'Considera de elegir asiento aleatorio 
+                                            al comprar más de un billete sino se realiza la compra de solo 1 viaje'</i></label>
                                         <?php
                                         echo form_input([
                                             'type' => 'number',
@@ -218,7 +218,11 @@
                     $numAsiento = $_POST['asiento'];
                 }
                 // Guardar e n session
-                session()->set('numAsiento', $numAsiento);
+                session()->set('numAsientoInsertado', $numAsiento);
+
+                // Guardar en session numBilletes
+                session()->set('numBilletes', $numBilletesSel);
+
                 echo view('v_servicios');
                 // echo view('v_servicios', $datosViajes);
             }

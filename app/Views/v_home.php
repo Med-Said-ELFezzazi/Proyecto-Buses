@@ -15,7 +15,7 @@
             <?php 
                 if (isset($ciudadesOrg) || isset($ciudadesDes) || isset($servicios)) {
                     echo view('v_reserva');
-                } else if (isset($compraOk)) {
+                } else if (isset($compraOk) && isset($emailOk)) {
                     echo view('v_compra');   
                 } else {
                     echo view('v_bienvenida');

@@ -1,18 +1,3 @@
-<?php
-    if (isset($_POST['comprar'])) {
-        // Comprueba 
-        // echo view('v_reserva');
-        
-        // echo "Comprando...";
-
-        // var_dump('clicked');
-
-
-        // view ('tstCompra.php');
-    }
-
-?>
-
 <div>
     <table class="info-table">
         <tr >
@@ -43,12 +28,15 @@
                 foreach ($servicios as $servicio) {
                     echo "<tr>";
                         echo "<td>";
-                            echo form_input([
-                                'type' => 'radio',
-                                'name' => 'servicioSel[]',
-                                'value' => $servicio['id_ruta'],
-                                'checked' => $esPrimero ? 'checked' : false
-                            ]);
+                            echo '<input type="radio" name="servicioSel[]" value="' . $servicio['id_ruta'] . '"';
+                            if ($esPrimero) {
+                                echo ' checked';
+                                $esPrimero = false;
+                            }
+                            if (!$servicio['hayPlazas']) {
+                                echo ' disabled';
+                            }
+                            echo '>';
                             $esPrimero = false;
                             echo date('H:i', strtotime($servicio['hora_salida']));
                         echo "</td>";
@@ -61,8 +49,7 @@
 
                         }
                     echo "</tr>";
-                }       
-
+                }
             ?>
         </tbody>
     </table>

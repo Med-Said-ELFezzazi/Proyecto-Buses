@@ -30,6 +30,8 @@
                     // Obtener los datos de los nuevos campos
                     $newNom = $this->request->getPost("modNom");
                     $newEmail = $this->request->getPost("modEmail");
+                    // quitar los espacios al principio y al final del email
+                    $newEmail = trim($newEmail);
                     $newTele = $this->request->getPost("modTele");
                     $newPwd = $this->request->getPost("modPwd");
                     // Hace la actualización en la BD

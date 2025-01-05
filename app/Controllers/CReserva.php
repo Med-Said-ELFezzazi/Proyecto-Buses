@@ -97,9 +97,24 @@
         }
 
         // Función que envía un correo al cliente con los detalles de la compra
-        public function enviarEmailCompra($emailCliente, $fechaIda, $horaSalidaIda, $origen, $destino,$numTicket, $asiento) {
+        public function enviarEmailCompra($emailCliente, $fechaIda, $horaSalidaIda, $origen, $destino, $arrTicketAsiento) {
             // Formatear la hora a H:i
             $horaSalidaIda = date('H:i', strtotime($horaSalidaIda));
+        
+            // Arrays para almacenar los valores de id_ticket y num_asiento
+            $idTickets = [];
+            $asientos = [];
+        
+            // Rellenar los arrays
+            foreach ($arrTicketAsiento as $ticket) {
+                $idTickets[] = $ticket['id_ticket'];
+                $asientos[] = $ticket['num_asiento'];
+            }
+        
+            // Convertir los arrays a cadenas separadas por coma
+            $idTicketsStr = implode(', ', $idTickets);
+            $asientosStr = implode(', ', $asientos);
+        
             // Cuerpo del mensaje
             $cuerpo = "<h1 style='color: green;'>Compra realizada correctamente</h1>
                 <p>Datos de la reserva:</p><br><br>
@@ -107,7 +122,7 @@
                     <table border='0' style='border-collapse: collapse; width: 100%;'>
                     <tbody>
                         <tr>
-                            <td alight='center' colspan='100'><b><i>IDA</i></b></td>
+                            <td align='center' colspan='100'><b><i>IDA</i></b></td>
                         </tr>
                         <tr>
                             <td>FECHA</td>
@@ -122,9 +137,9 @@
                         </tr>
                         <tr>
                             <td>NUM.ASIENTO</td>
-                            <td align='left'><b>{$asiento}</b></td>
+                            <td align='left'><b>{$asientosStr}</b></td>
                             <td>NUM.TICKET</td>
-                            <td align='left'><b>{$numTicket}</b></td>
+                            <td align='left'><b>{$idTicketsStr}</b></td>
                         </tr>
                     </tbody>
                     </table>
@@ -132,42 +147,90 @@
                 <br>
                 <b><i>Muchas gracias por la compra ¡Buen viaje!</i></b>
             ";
-
+        
             $emailService = Services::emailService();
             $resultado = $emailService->sendEmail(
                 $emailCliente,
                 'Confirmacion de compra',
                 $cuerpo
-                );
+            );
             return $resultado;
         }
+        
+
+        // Función que genera uno o varios números de asiento random
+        public function generarAsientoRandom($id_ruta, $numBilletes) {
+            // Obtener la capacidad del bus
+            $matriculaBusRuta = $this->modeloRutas->matriculaRuta($id_ruta);
+            $capacidadMaxBus = $this->modeloBuses->capacidadBus($matriculaBusRuta);
+        
+            // Obtener los asientos ya reservados
+            $asientosReservados = $this->modeloReservas->asientosReservadosRuta($id_ruta); // Array de objetos
+        
+            $arrAsientosLibres = []; // Array para los asientos libres
+        
+            // Convertir los objetos de asientos reservados a un array simple de números
+            $arrAsientosReservados = [];
+            foreach ($asientosReservados as $asiento) {
+                $arrAsientosReservados[] = $asiento->num_asiento;
+            }
+        
+            // Generar asientos aleatorios
+            for ($i = 1; $i <= $numBilletes; $i++) {
+                do {
+                    $asientoRandom = rand(1, $capacidadMaxBus);
+                } while (in_array($asientoRandom, $arrAsientosReservados) || in_array($asientoRandom, $arrAsientosLibres));
+        
+                $arrAsientosLibres[] = $asientoRandom;
+            }
+        
+            return $arrAsientosLibres;
+        }
+        
 
         // Función que registra la compra en la BD y manada correo al cliente
         public function realizarCompra() {
-            // Obtener datos de la compra
-            $id_ruta = $_POST['servicioSel'];
-            // Asiento luego... 
-            
-            // Insertar la reserva en la BD
-            $asiento = session()->get('numAsiento');
-            $reservaGrabada = $this->modeloReservas->agregarReserva(
-                session()->get('dniCliente'), $id_ruta, $asiento);
+            // Comprobar si haya seleccionado un radio valido 'no dishablitado'
+            if (!isset($_POST['servicioSel'])) {
+                // Vuelvo a la vista con mensaje de error
+            } else {
+                // Obtener datos de la compra
+                $id_ruta = $_POST['servicioSel'];
+                // Asiento luego... 
+                
+                $numBilletesSel = session()->get('numBilletes');
+                $asiento = session()->get('numAsientoInsertado'); // NULL/Numero
+                $arrAsientosRandom = [];
+                if ($asiento == null) {     // Generar asientos random
+                    // Generar asiento random
+                    $arrAsientosRandom = $this->generarAsientoRandom($id_ruta, $numBilletesSel);
+                } else {
+                    // Meter el asiento insertado por el cliente en el arrayRandom
+                    $arrAsientosRandom = [$asiento];
+                }
+                // Insertar la reserva en la BD
+                $reservaGrabada = $this->modeloReservas->agregarReserva(
+                    session()->get('dniCliente'), $id_ruta, $arrAsientosRandom);
+    
+                // Enviar correo al cliente 'methodo enviarcorreo
+                $datosRuta = $this->modeloRutas->dameDatosRuta($id_ruta);
+    
+                $emailCliente = $this->modeloClientes->dameCliente(session()->get('dniCliente'))->email;
+                $fechaIda = $datosRuta->fecha;
+                $horaSalidaIda = $datosRuta->hora_salida;
+                $origen = $datosRuta->ciudad_origin;
+                $destino = $datosRuta->ciudad_destino;
+                $arrNumTicket = $this->modeloReservas->dameIdTicket(session()->get('dniCliente'), $id_ruta, date('Y-m-d'));
+                
+                $emailEnviado = $this->enviarEmailCompra($emailCliente, $fechaIda, $horaSalidaIda, 
+                                $origen, $destino,$arrNumTicket, $arrAsientosRandom);
+    
+    
+                return view('v_home', ['compraOk' => $reservaGrabada,
+                            'emailOk' => $emailEnviado]);
 
-            // Enviar correo al cliente 'methodo enviarcorreo
-            $datosRuta = $this->modeloRutas->dameDatosRuta($id_ruta);
+            }
 
-            $emailCliente = $this->modeloClientes->dameCliente(session()->get('dniCliente'))->email;
-            $fechaIda = $datosRuta->fecha;
-            $horaSalidaIda = $datosRuta->hora_salida;
-            $origen = $datosRuta->ciudad_origin;
-            $destino = $datosRuta->ciudad_destino;
-            $numTicket = $this->modeloReservas->dameIdTicket(session()->get('dniCliente'), $id_ruta, date('Y-m-d'));
-            
-            $emailEnviado = $this->enviarEmailCompra($emailCliente, $fechaIda, $horaSalidaIda, $origen, $destino,$numTicket, $asiento);
-
-
-            return view('v_home', ['compraOk' => $reservaGrabada,
-                        'emailOk' => $emailEnviado]);
         }        
        
 } 
