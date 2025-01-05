@@ -19,7 +19,7 @@
                 } else if (isset($compraOk) && isset($emailOk)) {
                     echo view('v_compra');   
                 } else if (session()->get('admin')) {
-                    echo "admin hada";
+                    echo view('v_bienvenida');
                 } else {
                     echo view('v_bienvenida');
                 }

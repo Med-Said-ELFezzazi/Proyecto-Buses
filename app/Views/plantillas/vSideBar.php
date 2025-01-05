@@ -25,7 +25,7 @@
             <li class="text-center">
                     Sesión abierta por
                     <span class="fa fa-user"></span>
-                    <b>Administrador</b>
+                    <b><?= session()->get('admin'); ?></b>
                 </li>
                 <hr>
 

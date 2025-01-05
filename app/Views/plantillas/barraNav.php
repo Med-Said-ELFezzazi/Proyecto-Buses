@@ -30,6 +30,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact o opinion</a>
                 </li>
+
+            <!-- Admin logeado -->
+            <?php elseif (session()->get('admin')): ?>
+                <li class="nav-item active">
+                    <a class="nav-link" href="<?= site_url('/admin/buses'); ?>">Administración de buses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= site_url('/admin/rutas'); ?>">Gestión de Rutas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= site_url('/admin/averias'); ?>">Gestión averías</a>
+                </li>
             <?php else: ?>
                 <!-- El caso de que no sin session -->
                 <?php
