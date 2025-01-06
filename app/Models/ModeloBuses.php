@@ -32,4 +32,20 @@
         return $this->findAll();
     }
     
+
+    // Función que inserta un nuevo autobús
+    public function insertarBus($matricula, $capacidad, $modelo, $img) {
+        $datos = [
+            'matricula' => strtoupper($matricula),
+            'capacidad' => $capacidad,
+            'modelo' => $modelo,
+            'imagen' => $img
+        ];
+
+        if ($this->insert($datos)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

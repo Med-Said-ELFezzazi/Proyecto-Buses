@@ -1,3 +1,24 @@
+<?php 
+    // msj de error
+    if (isset($msgErrorMatricula)){
+        echo '<div class="alert alert-danger" role="alert">
+                    ' . $msgErrorBus . '
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close
+                <span aria-hidden="true">&times;</span></button>
+            </div>';
+    }
+
+    // msg de confirmación
+    if (isset($msgMatriExito)){
+        echo '<div class="alert alert-success" role="alert">
+                ' . $msgMatriExito . '
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+            </div>';
+    }
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,8 +82,13 @@
                 <tbody>
                     <?php foreach ($datosBuses as $bus): ?>
                         <tr>
-                            <td>
-                                <?php $rutaImg = base_url('images/buses/'. $bus->imagen . ''); ?>
+                            <td><?php 
+                                    if ($bus->imagen == '') {
+                                        $rutaImg = base_url('images/buses/sinImg.png');
+                                    } else {
+                                        $rutaImg = base_url('images/buses/'. $bus->imagen . '');
+                                    }
+                                ?>
                                 <img src="<?= $rutaImg ?>" alt="Bus Image" class="img-fluid" style="width: 100px; height: auto;">
                             </td>
                             <td><?= $bus->matricula; ?></td>
@@ -81,7 +107,18 @@
         <!-- Formulario para añadir nuevo bus -->
         <div id="nuevoBusForm" class="d-none">
             <h3 class="text-center text-success">Rellena los siguientes datos</h3>
-            <?= form_open('', ['method' => 'post'])?>
+            <!-- <= form_open(site_url('/admin/buses'), ['method' => 'post'])?> -->
+            <?= form_open(site_url('/admin/buses'), ['method' => 'post', 'enctype' => 'multipart/form-data']) ?>
+                <div class="form-group">
+                    <label for="imagen">Imagen</label>
+                    <?php 
+                        echo form_upload(['name' => 'imagen',
+                                        'class' => 'form-control',
+                                        'accept' => '.jpg,.jpeg,.png,.gif'
+                                    ]);
+                                    // El accept solo da sugerencias en el html
+                    ?>
+                </div>
                 <div class="form-group">
                     <label for="matricula">Matricula</label>
                     <?php 
@@ -98,7 +135,8 @@
                         echo form_input(['type' => 'number',
                                         'name' => 'capacidad', 
                                         'id' => 'capacidad', 
-                                        'class' => 'form-control', 
+                                        'class' => 'form-control',
+                                        'min' => 5,
                                         'required' => 'required']);
                     ?>
                 </div>

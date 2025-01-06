@@ -38,6 +38,7 @@ $routes->get('cerrarSession', 'CLogin::cerrarSession');
 // ADMIN
 $routes->get('/admin/home', 'CAdmin::index');
 // Administración de buses
-$routes->get('/admin/buses', 'CAdmin::administracionBuses');
+$routes->get('/admin/buses', 'CAdmin::administracionBuses'); // Cargar vista con datosBuses
+$routes->post('/admin/buses', 'CAdmin::administracionBuses'); // Insertar nuevo bus
 
 
