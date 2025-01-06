@@ -25,5 +25,11 @@
             ->first();
         return $capacidad ? $capacidad->capacidad : null;
     }
+
+    
+    // Función que obtiene todos los datos de buses en formato obj
+    public function datosBuses() {
+        return $this->findAll();
+    }
     
 }

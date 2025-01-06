@@ -34,6 +34,9 @@
             <!-- Admin logeado -->
             <?php elseif (session()->get('admin')): ?>
                 <li class="nav-item active">
+                    <a class="nav-link" href="<?= site_url('/admin/home'); ?>">Home</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="<?= site_url('/admin/buses'); ?>">Administración de buses</a>
                 </li>
                 <li class="nav-item">
