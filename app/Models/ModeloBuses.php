@@ -49,7 +49,6 @@
         }
     }
 
-        
     // Función que elimina un bus pasandole la matricula
     public function eliminarBus($mat) {
         $eliminado = $this->where('matricula', $mat)->delete();
@@ -62,5 +61,15 @@
         return $bus;
     }
     
+
+    // Función que modifica los datos de un bus
+    public function modificarBus($matricula, $capacidad, $modelo, $img) {
+        $datos = [
+            'capacidad' => $capacidad,
+            'modelo' => $modelo,
+            'imagen' => $img
+        ];
+        return $this->update($matricula, $datos);
+    }
 
 }
