@@ -67,6 +67,28 @@
         <!-- Button para pasar a añadir un bus nuevo -->
         <button class="btn btn-primary mb-3" id="btnAniadirBus">Añadir nuevo bus</button>
 
+        <!-- msj de error/confirmacion al borrar y al modificar -->
+         <?php
+            if (isset($_POST['borrarBus'])) {
+                if (isset($eliminacionExisto)) {
+                    // Eliminacion correcta
+                    echo '<div class="alert alert-success" role="alert">';
+                        echo 'El bus ha sido eliminado correctamente';
+                        echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>';
+                    echo '</div>';
+                } 
+                if (isset($msgErrorEliBus)){
+                    // Eliminacion incorrecta
+                    echo '<div class="alert alert-danger" role="alert">';
+                        echo $msgErrorEliBus;
+                            echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>';
+                    echo '</div>';
+                }
+            }
+         ?>
+
         <!-- Tabla de infos de buses -->
         <div id="busInfo">
             <table class="table table-striped">
@@ -82,27 +104,34 @@
                 <tbody>
                     <?php foreach ($datosBuses as $bus): ?>
                         <tr>
-                            <td><?php 
-                                    if ($bus->imagen == '') {
-                                        $rutaImg = base_url('images/buses/sinImg.png');
-                                    } else {
-                                        $rutaImg = base_url('images/buses/'. $bus->imagen . '');
-                                    }
-                                ?>
+                            <td> 
+                                <?php $rutaImg = base_url('images/buses/'. $bus->imagen); ?>
                                 <img src="<?= $rutaImg ?>" alt="Bus Image" class="img-fluid" style="width: 100px; height: auto;">
                             </td>
                             <td><?= $bus->matricula; ?></td>
                             <td><?= $bus->capacidad; ?></td>
                             <td><?= $bus->modelo; ?></td>
                             <td>
+                                <!-- Formulario para que pase la matricula y borra -->
+                                <?= form_open(current_url(), ['method' => 'post'])?>
                                 <a href="edit.php?id=<?= '$bus[id]'; ?>" class="btn btn-warning btn-sm">Editar</a>
-                                <a href="delete.php?id=<?= '$bus[id]'; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Estás seguro de que quieres eliminar este autobús?')">Borrar</a>
+
+                                <!-- Borrar bus -->
+                                <?php 
+                                    echo form_hidden('matricula', $bus->matricula);  // paso la matricula
+                                    echo form_input(['name' => 'borrarBus',
+                                                    'type' => 'submit',
+                                                    'class' => 'btn btn-danger btn-sm',
+                                                    'value' => 'Borrar']); 
+                                    ?>
+                                <?= form_close(); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
+
 
         <!-- Formulario para añadir nuevo bus -->
         <div id="nuevoBusForm" class="d-none">

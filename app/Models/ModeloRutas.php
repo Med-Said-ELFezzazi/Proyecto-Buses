@@ -72,5 +72,15 @@
             ->where('id_ruta', $id_ruta)
             ->first();
         return $datosRuta;
-    }    
+    }
+
+
+    // Función que devuelve si un bus y esta en uso en viajes futuros 
+    public function busEnUso($matricula) {
+        $count = $this
+            ->where('matricula', $matricula)
+            ->where('fecha >=', date('Y-m-d'))
+            ->countAllResults();
+        return $count > 0;
+    }
 }

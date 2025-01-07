@@ -36,7 +36,7 @@
     // Función que inserta un nuevo autobús
     public function insertarBus($matricula, $capacidad, $modelo, $img) {
         $datos = [
-            'matricula' => strtoupper($matricula),
+            'matricula' => trim(strtoupper($matricula)),
             'capacidad' => $capacidad,
             'modelo' => $modelo,
             'imagen' => $img
@@ -48,4 +48,19 @@
             return false;
         }
     }
+
+        
+    // Función que elimina un bus pasandole la matricula
+    public function eliminarBus($mat) {
+        $eliminado = $this->where('matricula', $mat)->delete();
+        return $eliminado;
+    }
+
+    // Función que devuelve datos de un bus pasandole su matricula
+    public function dameDatosBus($matricula) {
+        $bus = $this->where('matricula', $matricula)->first();
+        return $bus;
+    }
+    
+
 }

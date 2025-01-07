@@ -3,16 +3,18 @@
 namespace App\Controllers;
 
 use App\Models\ModeloBuses;
+use App\Models\ModeloRutas;
 // use stdClass;
 
-class CAdmin extends BaseController
-{
+class CAdmin extends BaseController {
 
     protected $modeloBuses;
+    protected $modeloRutas;
 
     public function __construct()
     {
         $this->modeloBuses = new ModeloBuses();
+        $this->modeloRutas = new ModeloRutas();
     }
 
 
@@ -47,7 +49,6 @@ class CAdmin extends BaseController
     }
 
     // Función que lanza la vista home pasandole datosBuses para cargarlo en la vista v_buses
-
     public function administracionBuses() {
         $datosBuses = $this->modeloBuses->datosBuses();
 
@@ -118,6 +119,33 @@ class CAdmin extends BaseController
                         ]);
                     }
                 }
+            }
+        }
+
+        // Click sobre Borrar bus
+        if (isset($_POST['borrarBus'])) {
+            // Obtener la matricula
+            $matricula = $_POST['matricula'];
+            // Antes de eliminar un bus deberia checkear si esta usado en alguna ruta en una fecha del futuro o el mismo dia
+            $busYaEnUso = $this->modeloRutas->busEnUso($matricula);
+            if ($busYaEnUso) {
+                // Error no se puede eliminar el bus
+                $msj = 'No se puede eliminar el bus con la matricula: ' . $matricula . ' ya que esta en uso';
+                return view('v_home', [
+                                    'datosBuses' => $datosBuses,
+                                    'msgErrorEliBus' => $msj]);
+            } else {
+                // Suprimir su imagen de images/buses
+                $busObj = $this->modeloBuses->dameDatosBus($matricula);
+                if ($busObj->imagen != 'sinImg.png') {      // Bus tiene imagen
+                    $rutaCompleta = WRITEPATH . '../public/images/buses/' . $busObj->imagen ;
+                    unlink($rutaCompleta);      // Eliminar img
+                }
+                // Eliminar el bus de BD
+                $eliminacionExisto = $this->modeloBuses->eliminarBus($matricula);
+
+                return view('v_home', ['datosBuses' => $datosBuses,
+                                    'eliminacionExisto' => $eliminacionExisto]);
             }
         }
 
