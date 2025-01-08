@@ -7,7 +7,7 @@
     protected $table      = 'averias';
     protected $primaryKey = 'id_averia';
 
-    protected $useAutoIncrement = false;
+    protected $useAutoIncrement = true;
 
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
@@ -47,6 +47,24 @@
         $datos = $consulta->find();
         return $datos;
     }    
+
+
+    // Función que inserta una averia nueva a la BD
+    public function insertarAveria($matricula, $descripcion, $fecha, $coste, $reparada){
+        $datos = [
+            'matricula' => $matricula,
+            'descripcion' => $descripcion,
+            'fecha' => $fecha,
+            'coste' => $coste,
+            'reparada' => $reparada
+        ];
+
+        if ($this->insert($datos)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 }

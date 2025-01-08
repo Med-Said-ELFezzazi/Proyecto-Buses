@@ -1,5 +1,20 @@
 <div class="row">
     <!-- Filtros -->
+    <h1 class="text-center">Lista de averías</h1>
+    <!-- Botón para cargar el formulario de añadir averia -->
+    <div class="col-12 mb-2">
+        <?= form_open(current_url(), ['method' => 'post']); ?>
+            <?= form_hidden('mostrarForm', '1'); ?>
+            <?= form_input([
+                'type' => 'submit',
+                'name' => 'mostrarForm',
+                'value' => 'Añadir Avería',
+                'class' => 'btn bg-primary float-left',
+                'style' => 'color: white;'
+            ]); ?>
+        <?= form_close(); ?>
+
+    </div>
     <div class="col-md-3" style="background-color:rgb(13, 151, 244);">
         <div class="boxHorariosHome MT20">
             <div class="contCampos" style="padding: 5px;">
@@ -99,8 +114,9 @@
                     <th>Matrícula</th>
                     <th>Descripción</th>
                     <th>Fecha y hora</th>
-                    <th>Coste de reparación</th>
-                    <th>Reparada</th>     <!--Coste <= al insertado-->
+                    <th>Coste</th>
+                    <th>Reparada</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -125,11 +141,14 @@
                                     echo $averia->coste . '€';
                                 echo '</td>';
                                 echo '<td>';
-                                    if ($averia->reparada) {
-                                        echo 'Sí';
-                                    } else {
-                                        echo 'No';
-                                    }
+                                    echo $averia->reparada ? "Sí" : "No";
+                                echo '</td>'; 
+                                echo '<td>';
+                                    echo '<a href="' . site_url("/admin/averias/modificar/" . $averia->id_averia) . '" 
+                                        class="btn btn-warning">Editar</a>';
+                                        echo '&ensp;';
+                                    echo '<a href="' . site_url("/admin/averias/modificar/" . $averia->id_averia) . '" 
+                                        class="btn btn-danger">Eliminar</a>';
                                 echo '</td>';
                             echo '</tr>';
                         }
@@ -153,11 +172,14 @@
                                     echo $averia->coste . '€';
                                 echo '</td>';
                                 echo '<td>';
-                                    if ($averia->reparada) {
-                                        echo 'Sí';
-                                    } else {
-                                        echo 'No';
-                                    }
+                                    echo $averia->reparada ? "Sí" : "No";
+                                echo '</td>';
+                                echo '<td>';
+                                    echo '<a href="' . site_url("/admin/averias/modificar/" . $averia->id_averia) . '" 
+                                        class="btn btn-warning">Editar</a>';
+                                        echo '&ensp;';
+                                    echo '<a href="' . site_url("/admin/averias/modificar/" . $averia->id_averia) . '" 
+                                        class="btn btn-danger">Eliminar</a>';
                                 echo '</td>';
                             echo '</tr>';
                         }
