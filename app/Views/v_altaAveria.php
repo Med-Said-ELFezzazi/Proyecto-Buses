@@ -92,7 +92,7 @@
                                 'type' => 'text',
                                 'class' => 'form-control',
                                 'value' => $desc,
-                                'placeHolder' => 'Introduce una descripción breve']); 
+                                'placeHolder' => 'Introduce una descripción breve']);
             ?>
         </div>
         
@@ -167,7 +167,6 @@
         
         <?php echo form_close(); ?>
     </div>
-
 
 </body>
 </html>

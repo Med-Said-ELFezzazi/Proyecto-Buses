@@ -73,5 +73,20 @@
         return true;
     }
 
+    // Función que obtiene una avería pasandole el id_averia
+    public function dameAveria($id_averia){
+        return $this->find($id_averia);;
+    }
+
+    // Función que actualiza daos de una averia pasandole su id_averia
+    public function actualizarAveria($id_averia, $matricula, $descripcion, $fecha, $coste, $reparada){
+        return $this->update($id_averia, [
+            'matricula' => $matricula,
+            'descripcion' => $descripcion,
+            'fecha' => $fecha,
+            'coste' => $coste,
+            'reparada' => $reparada
+            ]);
+    }
 
 }

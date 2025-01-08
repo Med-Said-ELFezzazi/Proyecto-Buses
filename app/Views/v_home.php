@@ -23,12 +23,13 @@
                     echo view('v_buses');
                 } else if (isset($datosAverias) || isset($datosFiltrados)) {
                     echo view('v_averias');
+                } else if (isset($averia)) {
+                    echo view('v_modAveria');
                 } else if (isset($matriculas)) {
                     echo view('v_altaAveria');
                 } else {
                     echo view('v_bienvenida');  // Aqui va logica de admin en la vista
                 }
-
 
             ?>
 

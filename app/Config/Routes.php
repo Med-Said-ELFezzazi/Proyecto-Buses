@@ -47,4 +47,4 @@ $routes->get('/admin/averias', 'CAverias::gestionAverias'); // Cargar la vista
 $routes->post('/admin/averias', 'CAverias::gestionAverias'); // Aplicar filtros 
 
 // Modificar averia
-$routes->get('/admin/averias/modificar/(:num)', 'CAverias::modificarAveria/$1');
+$routes->match(['GET', 'POST'], '/admin/averias/modificar/(:num)', 'CAverias::modificarAveria/$1');

@@ -123,10 +123,67 @@ class CAverias extends BaseController {
 
 
 
-
     // Función que recibe el id_averia obtiene sus datos de BD y los carga en la vista con formulario para modificar
     public function modificarAveria($id_averia) {
-        // $averia = $this->model->getAveriaById($id);
+        $matriculas = $this->modeloBuses->datosBuses(); // PAra cargar dropdown
+        $averia = $this->modeloAverias->dameAveria($id_averia);     // Datos de la averia
+
+        // Button submit actualizar averia clickado
+        if ($this->request->getPost('actualizarAveria')) {
+            // Obtener los datos actualizados
+            $MatriculaSel = $_POST['MatriculaSel'];
+            $descripcion = $_POST['descripcion'];          
+            // FEcha, comprobar si haya checkeado 'checkbox'
+            $fecha = '';
+            if (isset($_POST['fechayhora_hoy'])) {  // Si esta marcado
+                $fecha = date('Y-m-d H:i:s');
+            } else {
+                // Obtener la fecha del input
+                $fecha = $_POST['fecha'];
+            }
+            $coste = $_POST['costeAveria'];
+            $reparada = $_POST['reparada'];
+
+            // Validación de datos
+            $msgErrModAveria = '';
+            if ($MatriculaSel == '0') {
+                $msgErrModAveria .= 'Deberias seleccionar una matricula! <br>';
+            }
+            if ($descripcion == '') {
+                $msgErrModAveria .= 'Deberias introducir una descripción de la avería! <br>';
+            }
+            if ($fecha == '') {
+                $msgErrModAveria .= 'Deberias indicar la fecha/hora de la avería! <br>';
+            }
+            if ($coste == '' || $coste <= 0) {
+                $msgErrModAveria .= 'Deberias definir un coste a la avería! <br>';
+            }
+
+            if ($msgErrModAveria == '') {  // Ningun error
+                // Actualizar en BD
+                $actualizado = $this->modeloAverias->actualizarAveria($id_averia, $MatriculaSel, $descripcion, $fecha, $coste, $reparada);
+                
+                if ($actualizado) {
+                    $averiaActualizada = $this->modeloAverias->dameAveria($id_averia);
+                    return view('v_home', ['matriculas' => $matriculas,
+                                            'averia' => $averiaActualizada,
+                                            'msgInfoAveria' => 'Avería actualizada correctamente']);
+                } else {
+                    return view('v_home', ['matriculas' => $matriculas,
+                                            'averia' => $averia,
+                                            'msgInfoAveria' => 'Error al actualizar la avería']);
+                }
+            } else {
+                return view('v_home', ['matriculas' => $matriculas,
+                                    'averia' => $averia,
+                                    'msgErrorAveria' => $msgErrModAveria]);
+            }
+
+        } else {
+            // Cargar v_modAveria con campos repoblados
+            return view('v_home', ['matriculas' => $matriculas,
+                                'averia' => $averia]);
+        }       
     }
 
 }
