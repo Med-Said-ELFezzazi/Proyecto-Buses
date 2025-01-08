@@ -1,0 +1,52 @@
+<?php
+    namespace App\Models;
+    use CodeIgniter\Model;
+
+    class ModeloAverias extends Model {
+
+    protected $table      = 'averias';
+    protected $primaryKey = 'id_averia';
+
+    protected $useAutoIncrement = false;
+
+    protected $returnType     = 'object';
+    protected $useSoftDeletes = false;
+
+    protected $allowedFields = ['matricula', 'descripcion', 'fecha', 'coste', 'reparada'];
+
+    protected bool $allowEmptyInserts = false;
+    protected bool $updateOnlyChanged = true;
+
+    
+    // Función que obtiene todos los datos de averias
+    public function datosAverias() {
+        return $this->findAll();
+    }
+    
+
+    // Función que devuelve datos de averias seguna los filtros pasados
+    public function datosAveriasFiltrados($matricula, $fecha, $costeMin, $costeMax, $reparada) {
+        $consulta = $this;
+        if ($reparada != '' && $reparada != 2) {
+            $consulta->where('reparada', $reparada);
+        }   
+        if ($matricula != '') {
+            $consulta->where('matricula', $matricula);
+        }
+
+        if ($costeMin != '') {
+            $consulta->where('coste >=', $costeMin);
+        }
+        if ($costeMax != '') {
+            $consulta->where('coste <=', $costeMax);
+        }
+
+        if ($fecha != '') {
+            $consulta->where('DATE(fecha)', $fecha);
+        }
+        $datos = $consulta->find();
+        return $datos;
+    }    
+
+
+}

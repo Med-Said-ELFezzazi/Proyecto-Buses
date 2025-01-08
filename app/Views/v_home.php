@@ -22,6 +22,8 @@
                     echo view('v_compra');
                 } else if (isset($datosBuses)) {
                     echo view('v_buses');
+                } else if (isset($datosAverias) || isset($datosFiltrados)) {
+                    echo view('v_averias');
                 } else {
                     echo view('v_bienvenida');  // Aqui va logica de admin en la vista
                 }

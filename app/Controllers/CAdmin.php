@@ -53,7 +53,7 @@ class CAdmin extends BaseController {
         $datosBuses = $this->modeloBuses->datosBuses();
 
         // Añadir nuevo bus
-        if (isset($_POST['aniadirBus'])) {
+        if (isset($_POST['aniadirBus'])) {  // igual a $this->request->getPost('aniadirBus')
             $matricula = $_POST['matricula'];
 
             $msg = '';
@@ -149,8 +149,35 @@ class CAdmin extends BaseController {
             }
         }
 
+        // Modificar
+        if (isset($_POST['btnModificar'])) {
+            $mod = 'modificando';
+            return view('v_tst', ['datosBuses' => $datosBuses,
+                        'mod' => $mod]);
+        }
+ 
+
         // Lanzar la vista v_home
         return view('v_home', ['datosBuses' => $datosBuses]);
     }
 
+
+    /*public function modificarBus() {
+        $datosBuses = $this->modeloBuses->datosBuses();
+        $Newmodelo = $this->request->getPost('modelo');
+
+        return view('v_home', ['datosBuses' => $datosBuses,
+                            'modelo' => $Newmodelo]);
+    }*/
+
+
+
+
+
+
+
+
+    public function gestionAverias() {
+        
+    }
 }
