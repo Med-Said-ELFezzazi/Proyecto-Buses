@@ -13,8 +13,28 @@
                 'style' => 'color: white;'
             ]); ?>
         <?= form_close(); ?>
-
     </div>
+    <!-- msg info de eliminacion -->
+     <?php
+        if (isset($eliminacionAveria)) {
+            if ($eliminacionAveria) {
+                echo '<div class="alert alert-success text-center" role="alert">';
+                    echo 'La avería ha sido eliminada correctamente';
+                    echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+                        echo '<span aria-hidden="true">&times;</span>';
+                    echo '</button>';
+                echo '</div>';
+            } else {
+                echo '<div class="alert alert-danger text-center" role="alert">';
+                    echo 'Error al eliminar la avería de la BD!';
+                    echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+                        echo '<span aria-hidden="true">&times;</span>';
+                    echo '</button>';
+                echo '</div>';
+            }
+        }
+    ?>
+
     <div class="col-md-3" style="background-color:rgb(13, 151, 244);">
         <div class="boxHorariosHome MT20">
             <div class="contCampos" style="padding: 5px;">
@@ -145,10 +165,15 @@
                                 echo '</td>'; 
                                 echo '<td>';
                                     echo '<a href="' . site_url("/admin/averias/modificar/" . $averia->id_averia) . '" 
-                                        class="btn btn-warning">Editar</a>';
-                                        echo '&ensp;';
-                                    echo '<a href="' . site_url("/admin/averias/modificar/" . $averia->id_averia) . '" 
-                                        class="btn btn-danger">Eliminar</a>';
+                                    class="btn btn-warning">Editar</a>';
+                                    echo '&ensp;';
+                                    echo form_open(current_url(), ['method' => 'post']);
+                                        echo form_hidden('id_averiaBorrar', $averia->id_averia);
+                                        echo form_input([
+                                            'type' => 'submit',
+                                            'value' => 'Eliminar',
+                                            'class' => 'btn btn-danger']);
+                                    echo form_close();
                                 echo '</td>';
                             echo '</tr>';
                         }
@@ -178,8 +203,13 @@
                                     echo '<a href="' . site_url("/admin/averias/modificar/" . $averia->id_averia) . '" 
                                         class="btn btn-warning">Editar</a>';
                                         echo '&ensp;';
-                                    echo '<a href="' . site_url("/admin/averias/modificar/" . $averia->id_averia) . '" 
-                                        class="btn btn-danger">Eliminar</a>';
+                                    echo form_open(current_url(), ['method' => 'post']);
+                                        echo form_hidden('id_averiaBorrar', $averia->id_averia);
+                                        echo form_input([
+                                            'type' => 'submit',
+                                            'value' => 'Eliminar',
+                                            'class' => 'btn btn-danger']);
+                                    echo form_close();
                                 echo '</td>';
                             echo '</tr>';
                         }

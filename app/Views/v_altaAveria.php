@@ -29,7 +29,7 @@
     <!-- Msj erro/confirmación -->
      <?php
         if (isset($msgInfoAveria)) {
-            echo '<div class="alert alert-success" role="alert">';
+            echo '<div class="alert alert-success text-center" role="alert">';
                 echo $msgInfoAveria;
                 echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
                     echo '<span aria-hidden="true">&times;</span>';
@@ -38,7 +38,7 @@
 
         }
         if (isset($msgErrorAveria)) {
-            echo '<div class="alert alert-danger" role="alert">';
+            echo '<div class="alert alert-danger text-center" role="alert">';
                 echo $msgErrorAveria;
                 echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
                     echo '<span aria-hidden="true">&times;</span>';

@@ -67,4 +67,11 @@
     }
 
 
+    // Función que elimina de la BD la averia pasado por param
+    public function eliminarAveria($id){
+        $this->delete($id);
+        return true;
+    }
+
+
 }

@@ -105,8 +105,18 @@ class CAverias extends BaseController {
                                     'msgErrorAveria' => $msgErrAltaAveria]);
             }
         }
-        
+
         $datosAverias = $this->modeloAverias->datosAverias();
+        // Eliminar avería
+        if ($this->request->getPost('id_averiaBorrar')) {
+            // id_averia a eliminar
+            $id_averia = $_POST['id_averiaBorrar'];
+            // Eliminar de la BD
+            $eliminado = $this->modeloAverias->eliminarAveria($id_averia);
+            return view('v_home', ['datosAverias' => $datosAverias,
+                                    'eliminacionAveria' => $eliminado]);
+        }
+        
 
         return view('v_home', ['datosAverias' => $datosAverias]);
     }
