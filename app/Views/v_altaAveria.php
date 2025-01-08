@@ -35,6 +35,7 @@
                     echo '<span aria-hidden="true">&times;</span>';
                 echo '</button>';
             echo '</div>';
+
         }
         if (isset($msgErrorAveria)) {
             echo '<div class="alert alert-danger" role="alert">';
@@ -43,8 +44,27 @@
                     echo '<span aria-hidden="true">&times;</span>';
                 echo '</button>';
             echo '</div>';
+            $MatriculaSel = '0';
+            $desc = '';
+            $fecha = '';
+            $cost = '';
+            $reparada = null;
         }
-     
+
+        // Repoblación de campos en caso de error en caso inserción existosa limpiar campos
+        if (isset($msgErrorAveria)) {
+            $MatriculaSel = $_POST['MatriculaSel'] ?? '0';
+            $desc = $_POST['descripcion'] ?? '';
+            $fecha = $_POST['fecha'] ?? '';
+            $cost = $_POST['costeAveria'] ?? '';
+            $reparada = $_POST['reparadaAveria'] ?? null;
+        } else {
+            $MatriculaSel = '0';
+            $desc = '';
+            $fecha = '';
+            $cost = '';
+            $reparada = null;
+        }
      ?>
 
     <div>
@@ -67,8 +87,6 @@
         
         <div class="form-group">
             <?php 
-                // Repoblar todos los campos
-                $desc = $_POST['descripcion'] ?? '';
                 echo form_label('Descripción de la avería', 'descripcion');
                 echo form_input(['name' => 'descripcion',
                                 'type' => 'text',
@@ -80,7 +98,6 @@
         
         <div class="form-group">
             <?php 
-                $fecha = $_POST['fecha'] ?? '';
                 echo form_label('Fecha y Hora', 'fecha'); 
                 echo form_input(['type' => 'datetime-local',
                                 'name' => 'fecha',
@@ -101,7 +118,6 @@
         
         <div class="form-group">
             <?php 
-                $cost = $_POST['costeAveria'] ?? '';
                 echo form_label('Coste', 'coste');
                 echo form_input(['type' => 'number',
                                 'name' => 'costeAveria',
@@ -114,7 +130,6 @@
             <!-- SI -->
             <div class="form-check">
                 <?php 
-                    $reparada = $_POST['reparadaAveria'] ?? null;
                     echo form_radio([
                     'name' => 'reparadaAveria',
                     'value' => 1,
