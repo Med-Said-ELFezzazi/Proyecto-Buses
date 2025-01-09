@@ -48,3 +48,6 @@ $routes->post('/admin/averias', 'CAverias::gestionAverias'); // Aplicar filtros
 
 // Modificar averia
 $routes->match(['GET', 'POST'], '/admin/averias/modificar/(:num)', 'CAverias::modificarAveria/$1');
+
+// Gestion de rutas
+$routes->match(['GET', 'POST'], '/admin/rutas', 'CRutas::gestionRutas');

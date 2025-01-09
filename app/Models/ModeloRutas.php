@@ -83,4 +83,87 @@
             ->countAllResults();
         return $count > 0;
     }
+
+    // Función que comprueba si un bus ha sido usado en el pasado y no tiene ningún registro en fecha >= fecha actual
+    public function busUsadoPasado($matricula) {
+        $countPasado = $this
+            ->where('matricula', $matricula)
+            ->where('fecha <', date('Y-m-d'))
+            ->countAllResults();
+        return $countPasado > 0 && !$this->busEnUso($matricula);
+    }
+
+
+    // Función que obtiene las rutas que tiene un bus pasandole su matricula
+    public function dameRutasBus($matricula) {
+        $rutas = $this
+                ->where('matricula', $matricula)
+                ->findAll();
+        return !empty($rutas) ? $rutas : null;
+    }
+
+
+    // Función que devuelve todas las rutas que hay en BD
+    public function todasRutas() {
+        return $this->findAll();
+    }
+
+
+    // Función que obtiene todas las distintas ciudades 'origin y destino'
+    public function todasCiudades() {
+        $ciudades = $this
+        ->select('ciudad_origin, ciudad_destino')
+        ->distinct()
+        ->groupBy('ciudad_origin, ciudad_destino')
+        ->findAll();
+        return $ciudades;
+    }
+
+
+    // Función que devuelve datos de rutas seguna los filtros pasados
+    public function datosRutasFiltrados($matricula, $ciudad, $hSalida, $hLlegada, $fecha, $tarifaMin, $tarifaMax) {
+        $consulta = $this;
+        if ($matricula != '') {
+            $consulta->where('matricula', $matricula);
+        }
+   
+        if ($ciudad != '0') {
+            $consulta->groupStart() // Agrupa las condiciones OR
+                     ->where('ciudad_origin', $ciudad)
+                     ->orWhere('ciudad_destino', $ciudad)
+                     ->groupEnd();
+        }
+        
+        if ($hSalida != '') {
+            $consulta->where('hora_salida', $hSalida);
+        }   
+
+        if ($hLlegada != '') {
+            $consulta->where('hora_llegada', $hLlegada);
+        }   
+
+        if ($fecha != '') {
+            $consulta->where('DATE(fecha)', $fecha);
+        }
+
+        if ($tarifaMin != '') {
+            $consulta->where('tarifa >=', $tarifaMin);
+        }
+
+        if ($tarifaMax != '') {
+            $consulta->where('tarifa <=', $tarifaMax);
+        }
+
+        $datos = $consulta->findAll();
+        return $datos;
+    }   
+
+
+
+
+    // Función que elimna todas las rutas que tiene la matricula pasada en param
+    public function eliminarRutasMatricula($matricula) {
+        $this->where('matricula', $matricula)->delete();
+    }
+
 }

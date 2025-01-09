@@ -27,6 +27,8 @@
                     echo view('v_modAveria');
                 } else if (isset($matriculas)) {
                     echo view('v_altaAveria');
+                } else if (isset($datosRutas) || isset($datosFiltradosRutas)){
+                    echo view('v_rutas');
                 } else {
                     echo view('v_bienvenida');  // Aqui va logica de admin en la vista
                 }

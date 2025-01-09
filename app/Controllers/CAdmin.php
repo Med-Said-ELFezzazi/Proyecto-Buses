@@ -127,13 +127,34 @@ class CAdmin extends BaseController {
             // Obtener la matricula
             $matricula = $_POST['matricula'];
             // Antes de eliminar un bus deberia checkear si esta usado en alguna ruta en una fecha del futuro o el mismo dia
-            $busYaEnUso = $this->modeloRutas->busEnUso($matricula);
-            if ($busYaEnUso) {
-                // Error no se puede eliminar el bus
-                $msj = 'No se puede eliminar el bus con la matricula: ' . $matricula . ' ya que esta en uso';
+            $busYaEnUso = $this->modeloRutas->busEnUso($matricula); // Bus se usa en fecha futura
+
+            $busUsadoSoloPasado = $this->modeloRutas->busUsadoPasado($matricula);   // Bus ha sido usado antes y ya no
+            if ($busUsadoSoloPasado) {
+                // Eliminar registros de rutas pasadas
+                $this->modeloRutas->eliminarRutasMatricula($matricula);
+                // Eliminar bus
+                $this->modeloBuses->eliminarBus($matricula);
                 return view('v_home', [
-                                    'datosBuses' => $datosBuses,
-                                    'msgErrorEliBus' => $msj]);
+                    'datosBuses' => $datosBuses,
+                    'msgExitoEliBus' => 'Bus eliminado correctamente junto con sus rutas pasadas'
+                ]);
+            }
+            if ($busYaEnUso) {
+                // obtener id_rutas de la matricula
+                $idRutas = $this->modeloRutas->dameRutasBus($matricula);
+                $rutasStr = '';
+                foreach ($idRutas as $ruta) {
+                    $rutasStr .= $ruta->id_ruta . ',';
+                }
+                // Error no se puede eliminar el bus
+                $msj = 'No se puede eliminar el bus con la matricula: ' . $matricula . ' ya que esta en uso <br>
+                    Considera eliminar primero las rutas que tiene asignado <br>
+                    Nº de rutas: ' . $rutasStr . '<br><i> (Solo se eliminan buses con rutas antiguas de la fecha de hoy)</i>';
+                return view('v_home', [
+                    'datosBuses' => $datosBuses,
+                    'msgErrorEliBus' => $msj
+                ]);
             } else {
                 // Suprimir su imagen de images/buses
                 $busObj = $this->modeloBuses->dameDatosBus($matricula);
@@ -142,10 +163,12 @@ class CAdmin extends BaseController {
                     unlink($rutaCompleta);      // Eliminar img
                 }
                 // Eliminar el bus de BD
-                $eliminacionExisto = $this->modeloBuses->eliminarBus($matricula);
+                $eliminacionExito = $this->modeloBuses->eliminarBus($matricula);
 
-                return view('v_home', ['datosBuses' => $datosBuses,
-                                    'eliminacionExisto' => $eliminacionExisto]);
+                return view('v_home', [
+                    'datosBuses' => $datosBuses,
+                    'eliminacionExito' => $eliminacionExito ? 'Bus eliminado correctamente.' : 'No se ha podido eliminar el bus.'
+                ]);
             }
         }
 
@@ -170,14 +193,4 @@ class CAdmin extends BaseController {
                             'modelo' => $Newmodelo]);
     }*/
 
-
-
-
-
-
-
-
-    public function gestionAverias() {
-        
-    }
 }
