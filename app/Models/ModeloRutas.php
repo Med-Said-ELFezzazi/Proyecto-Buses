@@ -166,4 +166,19 @@
         $this->where('matricula', $matricula)->delete();
     }
 
+
+    // función que inserta a la BD una nueva ruta
+    public function insertarRuta($matricula, $ciudadOrigen, $ciudadDestino, $horaSalida, $horaLlegada, $tarifa, $fecha) {
+        $insertado = $this->insert([
+            'matricula' => $matricula,
+            'ciudad_origin' => $ciudadOrigen,
+            'ciudad_destino' => $ciudadDestino,
+            'hora_salida' => $horaSalida,
+            'hora_llegada' => $horaLlegada,
+            'tarifa' => $tarifa,
+            'fecha' => $fecha
+            ]);
+        
+        return $insertado;
+    }
 }

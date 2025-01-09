@@ -98,7 +98,7 @@ class CAverias extends BaseController {
                                             'msgInfoAveria' => 'Avería añadida correctamente']);
                 } else {
                     return view('v_home', ['matriculas' => $matriculas,
-                                        'msgInfoAveria' => 'Error al añadir la avería']);
+                                        'msgErrorAveria' => 'Error al añadir la avería']);
                 }
             } else {
                 return view('v_home', ['matriculas' => $matriculas,
