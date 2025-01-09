@@ -45,9 +45,10 @@ $routes->post('/admin/buses', 'CAdmin::administracionBuses'); // Insertar nuevo 
 // Gestion de averias
 $routes->get('/admin/averias', 'CAverias::gestionAverias'); // Cargar la vista
 $routes->post('/admin/averias', 'CAverias::gestionAverias'); // Aplicar filtros 
-
 // Modificar averia
 $routes->match(['GET', 'POST'], '/admin/averias/modificar/(:num)', 'CAverias::modificarAveria/$1');
 
 // Gestion de rutas
 $routes->match(['GET', 'POST'], '/admin/rutas', 'CRutas::gestionRutas');
+// Modificar ruta
+$routes->match(['GET', 'POST'], '/admin/rutas/modificar/(:num)', 'CRutas::modificarRuta/$1');

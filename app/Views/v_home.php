@@ -29,6 +29,8 @@
                     echo view('v_altaAveria');
                 } else if (isset($datosRutas) || isset($datosFiltradosRutas)){
                     echo view('v_rutas');
+                } else if (isset($rutaAmodificar)) {
+                    echo view('v_modRuta');
                 } else if (isset($matriculasPaRutas)) {
                     echo view('v_altaRuta');
                 } else {

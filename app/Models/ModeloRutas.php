@@ -187,4 +187,29 @@
     public function eliminarRuta($id) {
         return $this->where('id_ruta', $id)->delete();
     }
+
+    // Función que actualiza una ruta pasandole los nuevos valores por param
+    public function actualizarRuta($id, $matricula, $ciudadOrigen, $ciudadDestino, $horaSalida, $horaLlegada, $tarifa, $fecha) {
+        return $this->where('id_ruta', $id)
+                ->update([
+                    'matricula' => $matricula,
+                    'ciudad_origin' => $ciudadOrigen,
+                    'ciudad_destino' => $ciudadDestino,
+                    'hora_salida' => $horaSalida,
+                    'hora_llegada' => $horaLlegada,
+                    'tarifa' => $tarifa,
+                    'fecha' => $fecha
+                    ]);
+    }
+
+
+    // Función que conprueba si hay alguna ruta con una matricula y datos fecha y hora igual in BD
+    public function comprobarMatriculaExiste($matricula, $fecha, $horaSalida){
+        $count = $this->where('matricula', $matricula)
+                ->where('fecha',$fecha)
+                ->where('hora_salida', $horaSalida)
+            ->countAllResults();
+        return $count > 0;
+
+    }
 }

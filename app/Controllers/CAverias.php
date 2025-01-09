@@ -117,7 +117,6 @@ class CAverias extends BaseController {
                                     'eliminacionAveria' => $eliminado]);
         }
         
-
         return view('v_home', ['datosAverias' => $datosAverias]);
     }
 
