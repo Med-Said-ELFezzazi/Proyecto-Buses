@@ -17,43 +17,6 @@
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
-    // Obtener todas ciudades de origen
-    public function ciudadesOrg() {
-        $ciudadesOrg = $this
-            ->select('id_ruta, ciudad_origin')
-            ->groupBy('ciudad_origin')
-            ->findAll();
-        return $ciudadesOrg;
-    }
-
-    // Obtener todas ciudades de destino
-    public function ciudadesDes() {
-        $ciudadesDes = $this->select('id_ruta, ciudad_destino')
-                    ->groupBy('ciudad_destino')
-                    ->findAll();
-        return $ciudadesDes;
-    }
-
-    // Obtener datos de rutas con datos seleccionados
-    public function datosRutas($fecha, $ciudad_origin, $ciudad_destino) {
-        $datosRutas = $this
-            ->where('fecha', $fecha)
-            ->where('ciudad_origin', $ciudad_origin)
-            ->where('ciudad_destino', $ciudad_destino)
-            ->orderBy('hora_salida', 'ASC')
-            ->findAll();
-        return $datosRutas;
-    }
-    
-    // Obtener datos de tarifas segund ciudad origin
-    public function datosTarifas() {
-        $datosTarifas = $this
-            ->distinct()
-            ->select('ciudad_origin, ciudad_destino, tarifa')
-            ->orderBy('ciudad_origin', 'ASC')
-            ->findAll();
-        return $datosTarifas;
-    }
 
     // Función que el número de reservas de un viaje
     public function numeroReservas($id_ruta) {
@@ -107,4 +70,10 @@
         return $asientos;       // Devuelve un array de objetos 'num asiento'
     }
 
+
+    // Función que elimina reservas de ruta pasando su id_ruta en param
+    public function eliminarReservasRuta($id_ruta) {
+        $this->where('id_ruta', $id_ruta)
+        ->delete('reservas');
+    }
 }

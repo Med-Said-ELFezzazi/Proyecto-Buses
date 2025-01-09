@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\ModeloRutas;
 use App\Models\ModeloBuses;
+use App\Models\ModeloReservas;
 
 
 
@@ -12,10 +13,12 @@ class CRutas extends BaseController {
 
     protected $modeloRutas;
     protected $modeloBuses;
+    protected $modeloReservas;
 
     public function __construct() {
         $this->modeloRutas = new ModeloRutas();
         $this->modeloBuses = new ModeloBuses();
+        $this->modeloReservas = new ModeloReservas();
     }
 
 
@@ -117,7 +120,9 @@ class CRutas extends BaseController {
          if ($this->request->getPost('id_rutaBorrar')){
             // id_ruta a eliminar
             $id_ruta = $_POST['id_rutaBorrar'];
-            // Eliminar de la BD
+            // Eliminar las reservas de ruta
+            $this->modeloReservas->eliminarReservasRuta($id_ruta);
+            // Eliminar de la ruta
             $eliminado = $this->modeloRutas->eliminarRuta($id_ruta);
             return view('v_home', ['datosRutas' => $datosRutas,
                                     'eliminacionRuta' => $eliminado,
