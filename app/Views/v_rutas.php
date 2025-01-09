@@ -242,12 +242,12 @@
                                     class="btn btn-warning">Editar</a>';
                                     echo '&ensp;';
                                     echo form_open(current_url(), ['method' => 'post']);
-                                        echo form_hidden('id_rutaBorrar', $ruta->id_ruta);
-                                        echo form_input([
-                                            'type' => 'submit',
-                                            'value' => 'Eliminar',
-                                            'class' => 'btn btn-danger']);
-                                    echo form_close();
+                                    echo form_hidden('id_rutaBorrar', $ruta->id_ruta);
+                                    echo form_input([
+                                        'type' => 'submit',
+                                        'value' => 'Eliminar',
+                                        'class' => 'btn btn-danger']);
+                                echo form_close();
                                 echo '</td>';
                             echo '</tr>';
                         }

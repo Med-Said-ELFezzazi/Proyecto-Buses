@@ -74,11 +74,19 @@ class CRutas extends BaseController {
             if ($destino == '' || strlen($destino) < 3) {
                 $msgErrorAltaRuta .= 'Deberias introducir una ciudad destino valida! <br>';
             }
+            // Comprobar si las 2 ciudades iguales
+            if ($origen == $destino) {
+                $msgErrorAltaRuta .= 'La ciudad origen y destino no pueden ser iguales! <br>';
+            }
             if (!isset($hSalida)) {
                 $msgErrorAltaRuta .= 'Deberias insertar la hora de salida! <br>';
             }
             if (!isset($hLlegada)) {
                 $msgErrorAltaRuta .= 'Deberias insertar la hora de llegada! <br>';
+            }
+            // Comprabar si la hora de salida es menor que la hora de llegada
+            if ($hSalida > $hLlegada) {
+                $msgErrorAltaRuta .= 'La hora de salida no puede ser mayor que la hora de llegada!';
             }
             if ($fechaRuta == '') {
                 $msgErrorAltaRuta .= 'Deberias insertar la fecha de viaje! <br>';
@@ -104,13 +112,22 @@ class CRutas extends BaseController {
             }
          }
 
+         $datosRutas = $this->modeloRutas->todasRutas();
+         // Eliminación de ruta
+         if ($this->request->getPost('id_rutaBorrar')){
+            // id_ruta a eliminar
+            $id_ruta = $_POST['id_rutaBorrar'];
+            // Eliminar de la BD
+            $eliminado = $this->modeloRutas->eliminarRuta($id_ruta);
+            return view('v_home', ['datosRutas' => $datosRutas,
+                                    'eliminacionRuta' => $eliminado,
+                                    'todasCiudades' => $todasCiudades]);
+         }
 
 
 
 
 
-
-        $datosRutas = $this->modeloRutas->todasRutas();
 
 
         return view('v_home', ['datosRutas' => $datosRutas, 

@@ -181,4 +181,10 @@
         
         return $insertado;
     }
+
+
+    // Función que elimina una ruta pasandole su id
+    public function eliminarRuta($id) {
+        return $this->where('id_ruta', $id)->delete();
+    }
 }
