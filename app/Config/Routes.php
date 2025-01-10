@@ -38,8 +38,10 @@ $routes->get('cerrarSession', 'CLogin::cerrarSession');
 // ADMIN
 $routes->get('/admin/home', 'CAdmin::index');
 // Administración de buses
-$routes->get('/admin/buses', 'CAdmin::administracionBuses'); // Cargar vista con datosBuses
-$routes->post('/admin/buses', 'CAdmin::administracionBuses'); // Insertar nuevo bus
+$routes->get('/admin/buses', 'CBuses::administracionBuses');     // Cargar vista con datosBuses
+$routes->post('/admin/buses', 'CBuses::administracionBuses');   // Insertar nuevo bus
+
+
 // $routes->post('/admin/buses/modificar', 'CAdmin::modificarBus'); // Elim
 
 // Gestion de averias

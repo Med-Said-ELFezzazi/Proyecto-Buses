@@ -2,20 +2,20 @@
 // msj de error 'Añadir'
 if (isset($_POST['aniadirBus'])) {
     if (isset($msgErrorBus)) {
-        echo '<div class="alert alert-danger" role="alert">
-                            ' . $msgErrorBus . '
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"
-                        <span aria-hidden="true">&times;</span></button>
-                    </div>';
+        echo '<div class="alert alert-danger text-center" role="alert">
+                        ' . $msgErrorBus . '
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                    <span aria-hidden="true">&times;</span></button>
+                </div>';
     }
 
     // msg de confirmación 'Añadir'
     if (isset($msgMatriExito)) {
-        echo '<div class="alert alert-success" role="alert">
-                        ' . $msgMatriExito . '
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    </div>';
+        echo '<div class="alert alert-success text-center" role="alert">
+                    ' . $msgMatriExito . '
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                </div>';
     }
 }
 
@@ -231,12 +231,12 @@ if (isset($_POST['aniadirBus'])) {
         <!-- msj de error/confirmacion al borrar y al modificar -->
         <?php
         if (isset($_POST['borrarBus'])) {
-            if (isset($eliminacionExisto)) {
+            if (isset($msgExitoEliBus)) {
                 // Eliminacion correcta
                 echo '<div class="alert alert-success" role="alert">';
-                echo 'El bus ha sido eliminado correctamente';
+                    echo $msgExitoEliBus;
                 echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span></button>';
+                        <span aria-hidden="true">&times;</span></button>';
                 echo '</div>';
             }
             if (isset($msgErrorEliBus)) {
@@ -244,7 +244,7 @@ if (isset($_POST['aniadirBus'])) {
                 echo '<div class="alert alert-danger" role="alert">';
                 echo $msgErrorEliBus;
                 echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span></button>';
+                        <span aria-hidden="true">&times;</span></button>';
                 echo '</div>';
             }
         }
@@ -276,7 +276,7 @@ if (isset($_POST['aniadirBus'])) {
                         <tr data-matricula="<?= $bus->matricula; ?>">
                             <td>
                                 <?php $rutaImg = base_url('images/buses/' . $bus->imagen); ?>
-                                <img src="<?= $rutaImg ?>" alt="Bus Image" class="img-fluid" style="width: 100px; height: auto;">
+                                <img src="<?= $rutaImg ?>" alt="Bus Image" class="img-fluid" style="width: 120px; height: auto;">
                             </td>
                             <?= form_open(current_url('/mod'), ['method' => 'post', 'class' => 'bus-form']) ?>
                             <td><?= $bus->matricula; ?></td>

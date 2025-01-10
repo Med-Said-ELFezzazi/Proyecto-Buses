@@ -25,7 +25,7 @@ class CAdmin extends BaseController {
     }
 
     // Función que compruebe la validación de datos de un bus 'Tiene que tener 4 digitos y 3 letras'
-    public function matriculaValida($matricula)
+    /*public function matriculaValida($matricula)
     {
         // Longitud
         if (strlen($matricula) != 7) {
@@ -182,7 +182,7 @@ class CAdmin extends BaseController {
 
         // Lanzar la vista v_home
         return view('v_home', ['datosBuses' => $datosBuses]);
-    }
+    }*/
 
 
     /*public function modificarBus() {
