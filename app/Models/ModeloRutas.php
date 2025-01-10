@@ -189,8 +189,8 @@
     }
 
     // Función que actualiza una ruta pasandole los nuevos valores por param
-    public function actualizarRuta($id, $matricula, $ciudadOrigen, $ciudadDestino, $horaSalida, $horaLlegada, $tarifa, $fecha) {
-        return $this->where('id_ruta', $id)
+    /*public function actualizarRuta($id, $matricula, $ciudadOrigen, $ciudadDestino, $horaSalida, $horaLlegada, $tarifa, $fecha) {
+        /*return $this->where('id_ruta', $id)
                 ->update([
                     'matricula' => $matricula,
                     'ciudad_origin' => $ciudadOrigen,
@@ -199,8 +199,36 @@
                     'hora_llegada' => $horaLlegada,
                     'tarifa' => $tarifa,
                     'fecha' => $fecha
-                    ]);
+                    ]);*/
+       /* return $this->where('id_ruta', $id)
+            ->set([
+                'matricula' => $matricula,
+                'ciudad_origin' => $ciudadOrigen,
+                'ciudad_destino' => $ciudadDestino,
+                'hora_salida' => $horaSalida,
+                'hora_llegada' => $horaLlegada,
+                'tarifa' => $tarifa,
+                'fecha' => $fecha
+            ])
+            ->update(null, false); // Forzar actualización
+
+    }*/
+    
+    public function actualizarRuta($id_ruta, $matricula, $ciudad_origen, $ciudad_destino, $hora_salida, $hora_llegada, $tarifa, $fecha) {
+        $data = [
+            'matricula' => $matricula,
+            'ciudad_origin' => $ciudad_origen,
+            'ciudad_destino' => $ciudad_destino,
+            'hora_salida' => $hora_salida,
+            'hora_llegada' => $hora_llegada,
+            'tarifa' => $tarifa,
+            'fecha' => $fecha
+        ];
+    
+        // Usa el método update() de CodeIgniter
+        return $this->update($id_ruta, $data);
     }
+    
 
 
     // Función que conprueba si hay alguna ruta con una matricula y datos fecha y hora igual in BD
@@ -209,7 +237,7 @@
                 ->where('fecha',$fecha)
                 ->where('hora_salida', $horaSalida)
             ->countAllResults();
-        return $count > 0;
+        return $count == 1;
 
     }
 }

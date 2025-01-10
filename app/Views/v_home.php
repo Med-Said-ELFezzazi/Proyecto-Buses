@@ -33,7 +33,12 @@
                     echo view('v_modRuta');
                 } else if (isset($matriculasPaRutas)) {
                     echo view('v_altaRuta');
-                } else {
+                } else if(isset($gza)){
+                    echo view('v_modRuta');
+                }
+                
+                
+                else {
                     echo view('v_bienvenida');  // Aqui va logica de admin en la vista
                 }
 

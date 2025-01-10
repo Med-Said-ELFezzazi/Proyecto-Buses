@@ -158,7 +158,7 @@ class CRutas extends BaseController {
              $hSalida = $_POST['horaSalida'];
              $hLlegada = $_POST['horaLlegada'];
              $fecha = $_POST['fecha'];
-             $tarifa = $_POST['tarifa'];
+             $tarifa = (double)$_POST['tarifa'];
 
              // Comprobar datos insertados
              $msgErrModRuta = '';
@@ -171,7 +171,7 @@ class CRutas extends BaseController {
             if ($destino == '') {
                 $msgErrModRuta .= 'Deberias introducir el destino! <br>';
             }
-            if ($destino = $origen) {
+            if ($destino == $origen) {
                 $msgErrModRuta .= 'El origen y el destino no pueden ser iguales!';
             }
             if ($hSalida == '') {
@@ -196,38 +196,64 @@ class CRutas extends BaseController {
             }
 
             if ($msgErrModRuta == '') {
-                // Comprobar si el bus elegido ya tiene asignado una ruta en la fecha-hora elegidas
-                $rutaExiste = $this->modeloBuses->comprobarMatriculaExiste($MatriculaSel, $fecha, $hSalida);
-                if ($rutaExiste) {
-                    return view('v_home', ['matriculas' => $matriculas,
+                // Comprobaar si no haya cambiado datos claves 'matricula, fecha, hSalida'
+                if ($ruta->matricula == $MatriculaSel && $ruta->hora_salida == $hSalida && $ruta->fecha == $fecha) {
+                    // miro si otros datos estan cambiados
+                    if ($ruta->ciudad_origin == $origen && $ruta->ciudad_destino== $destino && $ruta->tarifa == $tarifa) {
+                        return view('v_home', ['matriculasModRuta' => $matriculas,
                                             'rutaAmodificar' => $ruta,
-                                            'msgInfoRuta' => 'El bus con la matricula: '.$MatriculaSel.
-                                            ' ya tiene asignada una ruta en la fecha y la hora selecciondas!']);
-                } else {
-                    // Actualizar en BD
-                    $actualizado = $this->modeloRutas->actualizarRuta($id_ruta, $MatriculaSel, $origen, $destino,
-                     $hSalida, $hLlegada, $tarifa, $fecha);
-                     if ($actualizado) {
-                        $rutaActualizada = $this->modeloRutas->dameDatosRuta($id_ruta);
-                        return view('v_home', ['matriculas' => $matriculas,
-                                                'rutaAmodificar' => $rutaActualizada,
-                                                'msgInfoRuta' => 'Ruta actualizada correctamente']);
+                                            'msgErrorRuta' => 'No has cambiado nada!']);
                     } else {
-                        return view('v_home', ['matriculas' => $matriculas,
+                        // Actualizar
+                        $salidaTime = date('H:i:s', strtotime($hSalida)); // Formato para TIME
+                        $llegadaTime = date('H:i:s', strtotime($hLlegada));
+                        $fechaDate = date('Y-m-d', strtotime($fecha));
+                        $rutaActualizada = $this->modeloRutas->actualizarRuta($id_ruta, $MatriculaSel, $origen, $destino, 
+                                                                $salidaTime, $llegadaTime, $tarifa, $fechaDate);
+                        if ($rutaActualizada) {
+                            // Repoblar con datos actualñizado el form
+                            $rutaActualizada = $this->modeloRutas->dameDatosRuta($id_ruta);
+                            return view('v_home', ['matriculasModRuta' => $matriculas,
+                                                    'rutaAmodificar' => $rutaActualizada,
+                                                    'msgInfoRuta' => 'Ruta actualizada correctamente']);
+                        } else {
+                            return view('v_home', ['matriculasModRuta' => $matriculas,
+                                                    'rutaAmodificar' => $ruta,
+                                                    'msgErrorRuta' => 'Error al actualizar en la BD!']);
+                        }
+                    }
+                } else {
+                    // Comprobar si los datos ya existen en la BD
+                    $yaExisteRuta = $this->modeloRutas->comprobarMatriculaExiste($MatriculaSel, $fecha, $hSalida);
+                    if ($yaExisteRuta) {
+                        return view('v_home', ['matriculasModRuta' => $matriculas,
                                                 'rutaAmodificar' => $ruta,
-                                                'msgInfoRuta' => 'Error al actualizar la ruta']);
+                                                'msgErrorRuta' => 'El bus con la matricula seleccionada: ' . $MatriculaSel . ' ya tiene una ruta asignada en la fecha y hora elegidas!']);
+                    } else {
+                        // Actualizar
+                        $rutaActualizada = $this->modeloRutas->actualizarRuta($id_ruta, $MatriculaSel, $origen, $destino, $hSalida, $hLlegada, $tarifa, $fecha);
+                        if ($rutaActualizada) {
+                            // Repoblar con datos actualñizado el form
+                            $rutaActualizada = $this->modeloRutas->dameDatosRuta($id_ruta);
+                            return view('v_home', ['matriculasModRuta' => $matriculas,
+                                                    'rutaAmodificar' => $rutaActualizada,
+                                                    'msgInfoRuta' => 'Ruta actualizada correctamente']);
+                        } else {
+                            return view('v_home', ['matriculasModRuta' => $matriculas,
+                                                    'rutaAmodificar' => $ruta,
+                                                    'msgErrorRuta' => 'Error al actualizar en la BD!']);
+                        }
                     }
                 }
             } else {
-                return view('v_home', ['matriculas' => $matriculas,
+                return view('v_home', ['matriculasModRuta' => $matriculas,
                                     'rutaAmodificar' => $ruta,
                                     'msgErrorRuta' => $msgErrModRuta]);
             }
         }
 
         return view('v_home', ['rutaAmodificar' => $ruta,
-                                'matriculas' => $matriculas]);
-
+                                'matriculasModRuta' => $matriculas]);
     }
 
     
