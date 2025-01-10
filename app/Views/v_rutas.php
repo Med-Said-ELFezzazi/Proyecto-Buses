@@ -65,7 +65,7 @@
                         foreach ($todasCiudades as $ciudad) {
                             $ciudadesOptions[$ciudad->ciudad_origin] = $ciudad->ciudad_origin;
                         }
-                        $CiudadSel = $_POST['origenSel'] ?? '0';
+                        $CiudadSel = $_POST['CiudadSel'] ?? '0';
                         echo form_dropdown('CiudadSel', $ciudadesOptions, $CiudadSel, [
                             'id' => 'CiudadSel',
                             'class' => 'select',
