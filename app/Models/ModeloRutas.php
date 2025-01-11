@@ -188,32 +188,7 @@
         return $this->where('id_ruta', $id)->delete();
     }
 
-    // Función que actualiza una ruta pasandole los nuevos valores por param
-    /*public function actualizarRuta($id, $matricula, $ciudadOrigen, $ciudadDestino, $horaSalida, $horaLlegada, $tarifa, $fecha) {
-        /*return $this->where('id_ruta', $id)
-                ->update([
-                    'matricula' => $matricula,
-                    'ciudad_origin' => $ciudadOrigen,
-                    'ciudad_destino' => $ciudadDestino,
-                    'hora_salida' => $horaSalida,
-                    'hora_llegada' => $horaLlegada,
-                    'tarifa' => $tarifa,
-                    'fecha' => $fecha
-                    ]);*/
-       /* return $this->where('id_ruta', $id)
-            ->set([
-                'matricula' => $matricula,
-                'ciudad_origin' => $ciudadOrigen,
-                'ciudad_destino' => $ciudadDestino,
-                'hora_salida' => $horaSalida,
-                'hora_llegada' => $horaLlegada,
-                'tarifa' => $tarifa,
-                'fecha' => $fecha
-            ])
-            ->update(null, false); // Forzar actualización
-
-    }*/
-    
+    // Función que actualiza una ruta pasandole los nuevos valores por param y su id   
     public function actualizarRuta($id_ruta, $matricula, $ciudad_origen, $ciudad_destino, $hora_salida, $hora_llegada, $tarifa, $fecha) {
         $data = [
             'matricula' => $matricula,
@@ -240,4 +215,30 @@
         return $count == 1;
 
     }
+
+
+    
+
+
+
+    // Funcion que devuelve datos de una ruta pasado su id_ruta en param
+    public function viajesTranscuridos($id_ruta) {
+        // fecha tiene que ser en el pasado o de hoy pero con hora_salida antes de la hora actual
+        $fechaActual = date('Y-m-d');
+        $horaActual = date('H:i');
+        $data = $this->where('id_ruta', $id_ruta)
+                    ->groupStart()
+                        ->where('fecha <', $fechaActual)
+                        ->orGroupStart()
+                            ->where('fecha', $fechaActual)
+                            ->where('hora_salida <', $horaActual)
+                        ->groupEnd()
+                    ->groupEnd()
+                    ->findAll();
+
+        return empty($data) ? [] : $data;
+    }
+
+    
+    
 }

@@ -36,11 +36,23 @@
                 } else if(isset($gza)){
                     echo view('v_modRuta');
                 }
+                else if (isset($tsting)) {
+                    echo view('vistaTemp');
                 
+                
+                } else if (isset($opin)) {      // exam
+                    echo view('v_opinion');
+
+                }
+                 else if (isset($busMod)) {
+                    echo view('v_modBus');
+                 }
                 
                 else {
                     echo view('v_bienvenida');  // Aqui va logica de admin en la vista
                 }
+
+       
 
             ?>
 
@@ -49,3 +61,64 @@
     </html>
 
 <?= $this->endSection(); ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+
+$views = [
+                    ['condition' => (isset($ciudadesOrg) && isset($ciudadesDes)) || isset($servicios) || isset($msgError), 'view' => 'v_reserva'],
+                    ['condition' => isset($compraOk) && isset($emailOk), 'view' => 'v_compra'],
+                    ['condition' => isset($datosBuses), 'view' => 'v_buses'],
+                    ['condition' => isset($datosAverias) || isset($datosFiltrados), 'view' => 'v_averias'],
+                    ['condition' => isset($averia), 'view' => 'v_modAveria'],
+                    ['condition' => isset($matriculas), 'view' => 'v_altaAveria'],
+                    ['condition' => isset($datosRutas) || isset($datosFiltradosRutas), 'view' => 'v_rutas'],
+                    ['condition' => isset($rutaAmodificar), 'view' => 'v_modRuta'],
+                    ['condition' => isset($matriculasPaRutas), 'view' => 'v_altaRuta'],
+                    ['condition' => isset($gza), 'view' => 'v_modRuta'],
+                    ['condition' => isset($tsting), 'view' => 'vistaTemp'],
+                ];
+
+                $viewFound = false;
+                foreach ($views as $view) {
+                    if ($view['condition']) {
+                        echo view($view['view']);
+                        $viewFound = true;
+                        break;
+                    }
+                }
+
+                if (!$viewFound) {
+                    echo view('v_bienvenida');  // Aqui va logica de admin en la vista
+                } -->

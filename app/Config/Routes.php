@@ -40,6 +40,7 @@ $routes->get('/admin/home', 'CAdmin::index');
 // Administración de buses
 $routes->get('/admin/buses', 'CBuses::administracionBuses');     // Cargar vista con datosBuses
 $routes->post('/admin/buses', 'CBuses::administracionBuses');   // Insertar nuevo bus
+$routes->match(['GET', 'POST'],'/admin/buses/mod/(:any)', 'CBuses::modificarBus/$1');   // mod
 
 
 // $routes->post('/admin/buses/modificar', 'CAdmin::modificarBus'); // Elim
@@ -54,3 +55,9 @@ $routes->match(['GET', 'POST'], '/admin/averias/modificar/(:num)', 'CAverias::mo
 $routes->match(['GET', 'POST'], '/admin/rutas', 'CRutas::gestionRutas');
 // Modificar ruta
 $routes->match(['GET', 'POST'], '/admin/rutas/modificar/(:num)', 'CRutas::modificarRuta/$1');
+
+
+
+// Opnion
+$routes->match(['GET', 'POST'], '/opinion', 'CClientes::opinar');
+$routes->match(['GET', 'POST'], '/opinion/add', 'CClientes::opinaradd');

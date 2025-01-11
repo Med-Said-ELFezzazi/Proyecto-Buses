@@ -76,4 +76,41 @@
         $this->where('id_ruta', $id_ruta)
         ->delete('reservas');
     }
+
+    // funcion que devuelve todas las reservas hechas por un cliente pasado en param
+    public function dameReservasCliente($dni) {
+        $reservas = $this
+        ->where('dni', $dni)
+        ->findAll();
+        return empty($reservas) ? [] : $reservas;
+    }
+
+    public function dameRutasReservadas($dni, $id_ruta) {
+        $reservas = $this
+        ->where('dni', $dni)
+        ->where('id_ruta', $id_ruta)
+        ->findAll();
+        return empty($reservas) ? [] : $reservas;
+
+    }
+
+
+    // funcion para insertar opinion
+    public function insertarOpinion($id_tickets, $opinion) {
+        $this->db->transStart();
+
+        foreach ($id_tickets as $id_ticket) {
+            $data = [
+                'opinion' => $opinion,
+                'fecha_opinion' => date('Y-m-d H:i:s')
+            ];
+
+            $this->where('id_ticket', $id_ticket)
+                 ->update($data);
+        }
+
+        $this->db->transComplete();
+
+        return $this->db->transStatus();
+    }
 }

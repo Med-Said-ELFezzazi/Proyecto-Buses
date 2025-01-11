@@ -4,15 +4,18 @@
 
     use App\Models\ModeloBuses;
     use App\Models\ModeloRutas;
+    use App\Models\ModeloReservas;
 
 
     class CBuses extends BaseController {
         protected $modeloRutas;
         protected $modeloBuses;
+        protected $modeloReservas;
 
         public function __construct(){
             $this->modeloBuses = new ModeloBuses();
             $this->modeloRutas = new ModeloRutas();
+            $this->modeloReservas = new ModeloReservas();
         }
 
         
@@ -170,6 +173,157 @@
             // Lanzar la vista v_home
             return view('v_home', ['datosBuses' => $datosBuses]);
         
+        }
+
+
+
+        // Función que actualiza datos de un bus pasando su matricula
+        public function modificarBus($matricula) {
+            $bus = $this->modeloBuses->dameDatosBus($matricula);
+              
+            // Al click actualizar bus
+            if (isset($_POST['actualizarBus'])) {
+                
+                // Obtener nuevos datos del bus
+                $capacidad = $_POST['capacidad'];
+                $modelo = $_POST['modelo'];
+
+                // Validación de datos
+                $msgErrModBus = '';
+                if ($capacidad == '') {
+                    $msgErrModBus .= 'Deberias introducir la capacidad! <br>';
+                }
+                if ($modelo == '') {
+                    $msgErrModBus .= 'Deberias introducir el modelo del bus!';
+                }
+                if ($msgErrModBus != '') {
+                    return view('v_home', ['busMod' => $bus,
+                                        'msgErrModBus' => $msgErrModBus]);
+                } else {
+                    // Configuración de subida 'caso haya subido algo'
+                    $imgFile = $this->request->getFile('imagen');
+                    if ($imgFile && $imgFile->isValid() && !$imgFile->hasMoved()) {
+                        // Validar que sea una imagen
+                        $tiposPermitidos = ['image/jpeg', 'image/png', 'image/gif'];
+                        if (!in_array($imgFile->getMimeType(), $tiposPermitidos)) {
+                            return view('v_home', [
+                                'busMod' => $bus,
+                                'msgErrModBus' => 'El archivo debe ser una imagen (JPG, PNG, GIF).'
+                            ]);
+                        }
+                        // Mover la imagen y guardarla
+                        $rutaDestino = WRITEPATH . '../public/images/buses/';
+                        $nomImg = $imgFile->getName();  // Obtener el nombre original de la imagen
+                        $imgFile->move($rutaDestino, $nomImg);
+
+                        // suprimir la imagen antigua si la tenia
+                        if ($bus->imagen != 'sinImg.png') {
+                            $rutaCompleta = WRITEPATH . '../public/images/buses/' . $bus->imagen ;
+                            unlink($rutaCompleta);      // Eliminar img
+                        }
+                        
+                        // En caso de que la nueva capacidad es menor que la actual => verificar si las reservas que tiene
+                        // el bus por cada ruta que tiene en fecha futura , que son menor o igual a la nueva capacidad
+                        if ($capacidad < $bus->capacidad) {
+                            $rutasBus = $this->modeloRutas->dameRutasBus($matricula);   // todas rutas que tiene el bus
+                            $arrRutasFuturo = [];       // Array de id_rutas con fecha en futuro
+                            if (!empty($rutasBus)) {
+                                foreach ($rutasBus as $ruta) {
+                                    // Fecha tiene que ser futuro o si es de hoy horaSalida mayor que ahora de actualizar 
+                                    if ($ruta->fecha > date('Y-m-d') || ($ruta->fecha == date('Y-m-d') && $ruta->hora_salida)) {
+                                        // Rellenar el array con ids
+                                        $arrRutasFuturo[] = $ruta->id_ruta;
+                                    }
+                                }
+                            }
+                            // Verificar si las reservas que tiene cada ruta no son mayor que la nueva capacidad 
+                            // Por eso voy a buscar la cantidad más alta de reservas que tiene y la comparo con la new capacidad
+                            $cantReservasMax = 0;
+                            $idRutaMayorReservas = 0;   // id_ruta con mayor reservas
+                            if (!empty($arrRutasFuturo)) {
+                                foreach ($arrRutasFuturo as $id_ruta) {
+                                    $cantidadReservas = $this->modeloReservas->numeroReservas($id_ruta);
+                                    if ($cantidadReservas > $cantReservasMax) {
+                                        $cantReservasMax = $cantidadReservas;
+                                        $idRutaMayorReservas = $id_ruta;    // Guardar id_ruta con max reservas
+                                    }
+                                }
+                            }
+
+                            // Comparar si la nueva capacidad es mayor o igual a la cantidadmax de reservas
+                            if ($capacidad >= $cantReservasMax) {
+                                // Actualizar
+                                $actualizado = $this->modeloBuses->actualizarBus($matricula, $capacidad, $modelo, $nomImg);
+                                if ($actualizado) {
+                                    return view('v_home', ['busMod' => $bus,
+                                                            'msgInfoModBus' => 'Datos actualizados correctamente']);
+                                } else {
+                                    return view('v_home', ['busMod' => $bus,
+                                                            'msgErrModBus' => 'Error al actualizar el bus BD!']);
+                                }
+                            } else {
+                                 return view('v_home', ['busMod' => $bus,
+                                                            'msgErrModBus' => 'ERROR! No puedes modificar la capacidad a una menor que
+                                                            la cantidad de reservas que ya tiene el bus <br>
+                                                           Considera poner una capacidad mayor a la que introdujiste o asignar
+                                                           un autobús distinto al ruta número: ' . $idRutaMayorReservas]);
+                            }
+                        }
+                    } else {
+                        // No se ha subido la imagen 'guardar el bus con imagen sinImg.png'
+
+                        // En caso de que la nueva capacidad es menor que la actual => verificar si las reservas que tiene
+                        // el bus por cada ruta que tiene en fecha futura , que son menor o igual a la nueva capacidad
+                        if ($capacidad < $bus->capacidad) {
+                            $rutasBus = $this->modeloRutas->dameRutasBus($matricula);   // todas rutas que tiene el bus
+                            $arrRutasFuturo = [];       // Array de id_rutas con fecha en futuro
+                            if (!empty($rutasBus)) {
+                                foreach ($rutasBus as $ruta) {
+                                    // Fecha tiene que ser futuro o si es de hoy horaSalida mayor que ahora de actualizar 
+                                    if ($ruta->fecha > date('Y-m-d') || ($ruta->fecha == date('Y-m-d') && $ruta->hora_salida)) {
+                                        // Rellenar el array con ids
+                                        $arrRutasFuturo[] = $ruta->id_ruta;
+                                    }
+                                }
+                            }
+                            // Verificar si las reservas que tiene cada ruta no son mayor que la nueva capacidad 
+                            // Por eso voy a buscar la cantidad más alta de reservas que tiene y la comparo con la new capacidad
+                            $cantReservasMax = 0;
+                            $idRutaMayorReservas = 0;   // id_ruta con mayor reservas
+                            if (!empty($arrRutasFuturo)) {
+                                foreach ($arrRutasFuturo as $id_ruta) {
+                                    $cantidadReservas = $this->modeloReservas->numeroReservas($id_ruta);
+                                    if ($cantidadReservas > $cantReservasMax) {
+                                        $cantReservasMax = $cantidadReservas;
+                                        $idRutaMayorReservas = $id_ruta;    // Guardar id_ruta con max reservas
+                                    }
+                                }
+                            }
+
+                            // Comparar si la nueva capacidad es mayor o igual a la cantidadmax de reservas
+                            if ($capacidad >= $cantReservasMax) {
+                                // Actualizar
+                                $actualizado = $this->modeloBuses->actualizarBus($matricula, $capacidad, $modelo);
+                                if ($actualizado) {
+                                    return view('v_home', ['busMod' => $bus,
+                                                            'msgInfoModBus' => 'Datos actualizados correctamente']);
+                                } else {
+                                    return view('v_home', ['busMod' => $bus,
+                                                            'msgErrModBus' => 'Error al actualizar el bus BD!']);
+                                }
+                            } else {
+                                 return view('v_home', ['busMod' => $bus,
+                                                            'msgErrModBus' => 'ERROR! No puedes modificar la capacidad a una menor que
+                                                            la cantidad de reservas que ya tiene el bus <br>
+                                                           Considera poner una capacidad mayor a la que introdujiste o asignar
+                                                           un autobús distinto al ruta número: ' . $idRutaMayorReservas]);
+                            }
+                        }
+                    }
+                }
+            }  
+            // Cargar la vista v_modBus
+            return view('v_home', ['busMod' => $bus]);
         }
 
 

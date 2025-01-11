@@ -63,13 +63,20 @@
     
 
     // Función que modifica los datos de un bus
-    public function modificarBus($matricula, $capacidad, $modelo, $img) {
+    public function actualizarBus($matricula, $capacidad, $modelo, $imagen = null) {
+        // Datos básicos que siempre se actualizan
         $datos = [
             'capacidad' => $capacidad,
             'modelo' => $modelo,
-            'imagen' => $img
         ];
+        
+        if (!is_null($imagen)) {
+            $datos['imagen'] = $imagen;
+        }
+
         return $this->update($matricula, $datos);
     }
+
+
 
 }

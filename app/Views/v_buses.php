@@ -57,166 +57,54 @@ if (isset($_POST['aniadirBus'])) {
 
             let btnAniadirBus = document.getElementById('btnAniadirBus');
             btnAniadirBus.addEventListener('click', cambiarVista);
-        });
 
 
-        // Modificar 
-        /*document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.btn-editar').forEach(function(btnEditar) {
-                btnEditar.addEventListener('click', function() {
+            // Editar bus
+            /*document.querySelectorAll('.btn-editar').forEach(function (btnEditar) {
+                btnEditar.addEventListener('click', function () {
                     const fila = this.closest('tr'); // Fila actual
                     const form = fila.querySelector('.bus-form'); // Formulario de la fila
                     const editando = fila.classList.contains('editando'); // Verificar modo edición
 
+                    // Al hacer clic en Editar
                     if (!editando) {
-                        // Cambiar texto de la fila a inputs
-                        fila.querySelectorAll('[data-field]').forEach(function(campo) {
-                            const nomInput = campo.getAttribute('data-field');
-                            const tipo = nomInput === 'modelo' ? 'text' : 'number';
-                            const value = campo.textContent.trim();
-                            campo.innerHTML = `<input type="${tipo}" name="${nomInput}" value="${value}" class="form-control">`;
-                        });
-
-                        // Cambiar botón a "Guardar"
-                        this.textContent = 'Guardar';
-                        fila.classList.add('editando');
-                    } else {
-                        // añado atributo name al button
-                        this.setAttribute('name', 'btnModificar');
-                        // Enviar el formulario al hacer clic en "Guardar"
-                        form.submit();
-                    }
-                });
-            });
-        });*/
-        /*document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.btn-editar').forEach(function(btnEditar) {
-                btnEditar.addEventListener('click', function() {
-                    const fila = this.closest('tr'); // Fila actual
-                    const form = fila.querySelector('.bus-form'); // Formulario de la fila
-                    const editando = fila.classList.contains('editando'); // Verificar modo edición
-
-                    if (!editando) {
-                        // Cambiar texto de la fila a inputs
-                        fila.querySelectorAll('[data-field]').forEach(function(campo) {
+                        // Prevenir el envío del formulario en modo edición
+                        event.preventDefault();
+                        fila.querySelectorAll('[data-field]').forEach(function (campo) {
                             const nomInput = campo.getAttribute('data-field');
                             const tipo = nomInput === 'modelo' ? 'text' : 'number';
                             const value = campo.textContent.trim();
 
-                            // Crear un nuevo input y agregarlo al campo
+                            // Crear un nuevo input y reemplazar el contenido
                             const input = document.createElement('input');
                             input.type = tipo;
                             input.name = nomInput;
                             input.value = value;
                             input.className = 'form-control';
-
-                            // Reemplazar el contenido del campo con el nuevo input
                             campo.innerHTML = '';
                             campo.appendChild(input);
                         });
 
-                        // Cambiar botón a "Guardar"
+                        // Cambiar el texto del btn a "Guardar"
                         this.textContent = 'Guardar';
+                        this.type = 'submit'; // Cambia el tipo a submit para enviar el formulario
+                        this.name = 'modificarBus'; // Asegúrate de que tenga el atributo name
                         fila.classList.add('editando');
-                    } else {
-                        // Validar los campos antes de enviar el formulario
-                        const inputs = fila.querySelectorAll('input');
-                        let valido = true;
-                        inputs.forEach(function(input) {
-                            if (!input.value.trim()) {
-                                valido = false;
-                                alert(`El campo ${input.name} no puede estar vacío.`);
-                            }
-                        });
-
-                        if (valido) {
-                            // Actualizar los campos ocultos con los nuevos valores
-                            inputs.forEach(function(input) {
-                                const hiddenInput = form.querySelector(`input[type="hidden"][name="${input.name}"]`);
-                                if (hiddenInput) {
-                                    hiddenInput.value = input.value; // Actualizar el valor del campo oculto
-                                }
-                            });
-
-                            // Añadir atributo name al botón
-                            this.setAttribute('name', 'btnModificar');
-                            // Enviar el formulario al hacer clic en "Guardar"
-                            form.submit();
-                        }
+                    } else { 
+                        // Cambiar de vuelta a modo Editar
+                        this.textContent = 'Editar';
+                        this.type = 'button'; // Vuelve a ser un btn normal
+                        this.name = ''; // Elimina el atributo name
+                        fila.classList.remove('editando');
+                        // enviar form
+                        form.submit();
                     }
                 });
-            });
-        });*/
+            });*/
 
 
-
-
-
-        document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.btn-editar').forEach(function(btnEditar) {
-        btnEditar.addEventListener('click', function() {
-            const fila = this.closest('tr'); // Fila actual
-            const form = fila.querySelector('.bus-form'); // Formulario de la fila
-            const editando = fila.classList.contains('editando'); // Verificar modo edición
-
-            if (!editando) {
-                // Cambiar texto de la fila a inputs
-                fila.querySelectorAll('[data-field]').forEach(function(campo) {
-                    const nomInput = campo.getAttribute('data-field');
-                    const tipo = nomInput === 'modelo' ? 'text' : 'number';
-                    const value = campo.textContent.trim();
-
-                    // Crear un nuevo input y agregarlo al campo
-                    const input = document.createElement('input');
-                    input.type = tipo;
-                    input.name = nomInput;
-                    input.value = value;
-                    input.className = 'form-control';
-
-                    // Reemplazar el contenido del campo con el nuevo input
-                    campo.innerHTML = '';
-                    campo.appendChild(input);
-                });
-
-                // Cambiar botón a "Guardar"
-                this.textContent = 'Guardar';
-                fila.classList.add('editando');
-            } else {
-                // Validar los campos antes de enviar el formulario
-                const inputs = fila.querySelectorAll('input');
-                let valido = true;
-
-                inputs.forEach(function(input) {
-                    if (!input.value.trim()) {
-                        valido = false;
-                        alert(`El campo ${input.name} no puede estar vacío.`);
-                    }
-                });
-
-                if (valido) {
-                    // Actualizar los campos ocultos con los nuevos valores
-                    inputs.forEach(function(input) {
-                        let hiddenInput = form.querySelector(`input[type="hidden"][name="${input.name}"]`);
-                        if (!hiddenInput) {
-                            // Crear un campo hidden si no existe
-                            hiddenInput = document.createElement('input');
-                            hiddenInput.type = 'hidden';
-                            hiddenInput.name = input.name;
-                            form.appendChild(hiddenInput);
-                        }
-                        hiddenInput.value = input.value; // Actualizar el valor del campo oculto
-                    });
-
-                    // Añadir atributo name al botón
-                    this.setAttribute('name', 'btnModificar');
-
-                    // Enviar el formulario al hacer clic en "Guardar"
-                    form.submit();
-                }
-            }
-        });
     });
-});
+
 
     </script>
 </head>
@@ -230,32 +118,44 @@ if (isset($_POST['aniadirBus'])) {
 
         <!-- msj de error/confirmacion al borrar y al modificar -->
         <?php
-        if (isset($_POST['borrarBus'])) {
-            if (isset($msgExitoEliBus)) {
-                // Eliminacion correcta
-                echo '<div class="alert alert-success" role="alert">';
-                    echo $msgExitoEliBus;
-                echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>';
-                echo '</div>';
+            // Modificar
+            if (isset($_POST['modificarBus'])) {
+                if (isset($_POST['msgInfoModBus'])) {
+                    echo '<div class="alert alert-success" role="alert">';
+                        echo $msgInfoModBus;
+                        echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>';
+                    echo '</div>';
+                }
+    
+                if (isset($_POST['msgErrModBus'])) {
+                    echo '<div class="alert alert-danger" role="alert">';
+                        echo $msgErrModBus;
+                        echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>';
+                    echo '</div>';
+                }
             }
-            if (isset($msgErrorEliBus)) {
-                // Eliminacion incorrecta
-                echo '<div class="alert alert-danger" role="alert">';
-                echo $msgErrorEliBus;
-                echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>';
-                echo '</div>';
-            }
-        }
-        // if (isset($mod)) {
-        //     var_dump("click modify");
-        // }
 
-        if (isset($_POST['btnModificar'])) {
-            echo $mod;
-        }
-        var_dump($_POST); // Muestra los datos enviados por el formulario
+            // Borrar
+            if (isset($_POST['borrarBus'])) {
+                if (isset($msgExitoEliBus)) {
+                    // Eliminacion correcta
+                    echo '<div class="alert alert-success" role="alert">';
+                        echo $msgExitoEliBus;
+                    echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>';
+                    echo '</div>';
+                }
+                if (isset($msgErrorEliBus)) {
+                    // Eliminacion incorrecta
+                    echo '<div class="alert alert-danger" role="alert">';
+                    echo $msgErrorEliBus;
+                    echo '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>';
+                    echo '</div>';
+                }
+            }
 
         ?>
 
@@ -278,20 +178,20 @@ if (isset($_POST['aniadirBus'])) {
                                 <?php $rutaImg = base_url('images/buses/' . $bus->imagen); ?>
                                 <img src="<?= $rutaImg ?>" alt="Bus Image" class="img-fluid" style="width: 120px; height: auto;">
                             </td>
-                            <?= form_open(current_url('/mod'), ['method' => 'post', 'class' => 'bus-form']) ?>
+                            <?= form_open(current_url(), ['method' => 'post', 'class' => 'bus-form']) ?>
                             <td><?= $bus->matricula; ?></td>
                             <td data-field="capacidad"><?= $bus->capacidad; ?></td>
                             <td data-field="modelo"><?= $bus->modelo; ?></td>
                             <td>
-                                <button type="button" class="btn btn-warning btn-sm btn-editar">Editar</button>
-                            </td>
-                            <td>
-                                <!-- Borrar -->
+                                <!-- <button type="button" class="btn btn-warning btn-sm btn-editar" name="modificarBus">Editar</button> -->
+                                <!-- Borrar y modificar-->
                                 <?= form_hidden('capacidad', $bus->capacidad); ?>
                                 <?= form_hidden('modelo', $bus->modelo); ?>
-
-
                                 <?= form_hidden('matricula', $bus->matricula); ?>
+                        
+                                <a href="<?php echo current_url() . '/mod/' . $bus->matricula; ?>" class="btn btn-warning">Editar</a>                               
+                            </td>
+                            <td>
                                 <?= form_input([
                                     'name' => 'borrarBus',
                                     'type' => 'submit',
