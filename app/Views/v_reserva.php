@@ -80,8 +80,6 @@
                                         ]);
                                     ?>
                                 </div>
-
-
                             </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
@@ -99,6 +97,34 @@
                                                     'class' => 'form-select'
                                                 ]);                                 
                                         ?>
+                                    </div>
+                                </div>       
+                                
+                                <div class="col-md-6">
+                                    <label class="form-label">Fecha de Vuelta</label>
+                                    <?php
+                                        $fechaVueltaSel = $_POST['fecha_vuelta'] ?? $fecha_actual;
+                                        echo form_input([
+                                            'type' => 'date',
+                                            'id' => 'fecha_vuelta',
+                                            'name' => 'fecha_vuelta',
+                                            'class' => 'form-control',
+                                            'value' => $fechaVueltaSel,
+                                            'min' => $fecha_actual
+                                        ]);
+                                    ?>
+                                    <div class="form-check mt-2">
+                                        <?php
+                                        // checkbox por defecto checkeado
+                                            echo form_input([
+                                                'type' => 'checkbox',
+                                                'name' => 'soloIda',
+                                                'id' => 'soloIda',
+                                                'class' => 'form-check-input',
+                                                'checked' => 'checked'
+                                            ]);                                                
+                                        ?>
+                                        <label class="form-check-label" >Solo ida</label>
                                     </div>
                                 </div>
 
