@@ -1,63 +1,77 @@
 <h1 class="text-center">ULTIMAS RESERVAS COMPLETADAS</h1>
+<!-- Error  -->
+<?php if (isset($msgErrOpin)): ?>
+    <div class="alert alert-danger text-center" role="alert">
+        <?= $msgErrOpin ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
 
-<?php 
-    if (isset($_POST['msg'])) {
-        var_dump($msg);
-    }
+<!-- Opinion guardado bien -->
+<?php if (isset($msgInfoOpi)): ?>
+    <div class="alert alert-success text-center" role="alert">
+        <?= $msgInfoOpi ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
 
-?>
 
-<?= form_open(site_url('/opinion/add'), ['method' => 'post']); ?>
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th></th>
-            <th>Nº ruta</th>
-            <th>Origen</th>
-            <th>Destino</th>
-            <th>Hora llegada</th>
-            <th>Bus</th>
-        </tr>
 
-        <tbody>
-            <?php foreach($opin as $o): ?>
+<?php if(isset($msgNoReservas)): ?>
+    <?= $msgNoReservas; ?>
+<?php else: ?>
+    <?= form_open(site_url('/opinion/add'), ['method' => 'post']); ?>
+    <table class="table table-striped table-bordered text-center">
+        <thead>
             <tr>
-                <td><input type="checkbox" name="selected_tickets[]" value="<?= $o['id_ticket']; ?>"></td>
-
-                <td><?= $o['id_ruta']; ?></td>
-                <td><?= $o['origen']; ?></td>
-                <td><?= $o['destino']; ?></td>
-                <td><?= $o['hLlegada']; ?></td>
-                <td><img src="<?= base_url('/images/buses/'.$o['img']); ?>" height="100px" width="100%" /></td>
+                <th></th>
+                <th>Nº ruta</th>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Hora llegada</th>
+                <th>Bus</th>
             </tr>
+        </thead>
+        <tbody>
+            <?php 
+                foreach($datosOpinion as $reserva): ?>
+                <tr>
+                    <td>
+                        <?= form_input(['name' => 'reservasSel[]',
+                                        'type' => 'checkbox',
+                                        'value' => $reserva['id_ticket']]);
+                        ?>
+                    </td>
+                    <td><?= $reserva['id_ruta']; ?></td>
+                    <td><?= $reserva['cOrigen']; ?></td>
+                    <td><?= $reserva['cDestino']; ?></td>
+                    <td><?= $reserva['hLlegada']; ?></td>
+                    <td><img src="<?= base_url('/images/buses/'.$reserva['imagen']); ?>" height="150px" width="250px" /></td>
+                </tr>
+
             <?php endforeach; ?>
         </tbody>
+    </table>
 
-    </thead>
-
-</table>
-
-    <div class="form-group">
-        <label for="comentario">Opinion:</label>
-        <?= form_input(['name' => 'comentario', 'id' => 'comentario', 'class' => 'form-control']); ?>
+    <div class="container" style="max-width: 600px; margin: auto;">
+        <div class="form-group text-center">
+            <label for="opinion">Opinión</label>
+            <?php
+                echo form_textarea(['name' => 'opinion', 
+                            'placeholder' => 'Introduce tu opinión',
+                            'class' => 'form-control']);
+                echo '<br>';
+                echo form_input(['name' => 'guardarOpinion',
+                                'type' => 'submit',
+                                'value' => 'Guardar opinión',
+                                'class' => 'btn btn-primary']);
+            ?>
+        </div>
     </div>
-    <?= form_submit('btnOpinar', 'Enviar', ['class' => 'btn btn-primary']); ?>
+    <?= form_close(); ?>
 
-<?= form_close(); ?>
-                
-
-<?php 
-    // var_dump($msg);
-
-  
-    // foreach ($opin as $p) {
-    //     echo $p['id_ticket'];
-    //     echo $p['id_ruta'];
-    //     echo $p['origen'];
-    //     echo $p['destino'];
-    //     echo $p['hLlegada'];
-    // }
-
-
-
-?>
+<?php endif; ?>

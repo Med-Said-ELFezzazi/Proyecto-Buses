@@ -28,7 +28,7 @@
                     <a class="nav-link" href="<?= site_url('/reserva'); ?>">Comprar billetes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= site_url('/opinion'); ?>">Opinion Examen</a>
+                    <a class="nav-link" href="<?= site_url('/opinion'); ?>">Tu opinión</a>
                 </li>
 
             <!-- Admin logeado -->

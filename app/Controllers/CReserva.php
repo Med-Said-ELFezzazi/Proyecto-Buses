@@ -236,7 +236,104 @@
             }
         }    
 
-       
+
+        // Cargar vista Opinion
+        public function opinar() {
+            $datos = [];
+
+            // Obtener los datos necesarios desde la BD
+            $dniCli = $this->session->get('dniCliente');
+
+            $reservasSinOpin = $this->modeloReservas->reservasSinOpinionCli($dniCli);
+
+            // Comprobar si el cliente no tiene ningúna reserva
+            if (empty($reservasSinOpin)) {
+                return view('v_home', ['datosOpinion' => 'nada',
+                                        'msgNoReservas' => 'No tienes ningúna reserva transcurrida!']);
+            }
+
+            foreach ($reservasSinOpin as $reserva) {
+                $ruta = $this->modeloRutas->dameDatosRuta($reserva->id_ruta);
+                // Obtener datos solo de las rutas transcurridas
+                if ($ruta->fecha < date('Y-m-d') || ($ruta->fecha == date('Y-m-d') && $ruta->hora_llegada < date('H:i:s'))) {
+                    // Obtener la imagen del bus que hizo la ruta
+                    $imgBus = $this->modeloBuses->dameDatosBus($ruta->matricula);
+                    
+                    // Recoger los datos a enviar
+                    $datos[] = ['id_ticket' => $reserva->id_ticket,
+                            'id_ruta' => $reserva->id_ruta,
+                            'cOrigen' => $ruta->ciudad_origin,
+                            'cDestino' => $ruta->ciudad_destino,
+                            'hLlegada' => $ruta->hora_llegada,
+                            'imagen' => $imgBus->imagen
+                            ];
+                }
+            }
+            return view('v_home', ['datosOpinion' => $datos]);
+        }
+
+        
+        // Insertar opinión
+        public function insertarOpinion() {
+            // Obtener las reservas sin opinion de BD 'para cargar la vista'
+            $dniCli = $this->session->get('dniCliente');
+            $reservasSinOpin = $this->modeloReservas->reservasSinOpinionCli($dniCli);
+            $datos = [];
+
+            // Comprobar si el cliente no tiene ningúna reserva
+            if (empty($reservasSinOpin)) {
+                return view('v_home', ['datosOpinion' => 'nada',
+                                        'msgNoReservas' => 'No tienes ningúna reserva transcurrida!']);
+            }
+
+            foreach ($reservasSinOpin as $reserva) {
+                $ruta = $this->modeloRutas->dameDatosRuta($reserva->id_ruta);
+                // Obtener datos solo de las rutas transcurridas
+                if ($ruta->fecha < date('Y-m-d') || ($ruta->fecha == date('Y-m-d') && $ruta->hora_llegada < date('H:i:s'))) {
+                    // Obtener la imagen del bus que hizo la ruta
+                    $imgBus = $this->modeloBuses->dameDatosBus($ruta->matricula);
+                    
+                    // Recoger los datos a enviar
+                    $datos[] = ['id_ticket' => $reserva->id_ticket,
+                            'id_ruta' => $reserva->id_ruta,
+                            'cOrigen' => $ruta->ciudad_origin,
+                            'cDestino' => $ruta->ciudad_destino,
+                            'hLlegada' => $ruta->hora_llegada,
+                            'imagen' => $imgBus->imagen
+                            ];
+                }
+            }
+
+            // Obtener las reservas seleccionadas
+            $msgErrOpin = '';
+            if (!isset($_POST['reservasSel']) || empty($_POST['reservasSel'])) {
+                $msgErrOpin = 'No has seleccionado ningúna reserva! <br>';
+            }
+            
+
+            // Comprobar si haya introducido un texto
+            $opinion = $_POST['opinion'];
+            if ($opinion == '') {
+                $msgErrOpin .= 'No has introducido tu opinión!';
+            }
+
+            if ($msgErrOpin != '') {
+                return view('v_home', ['datosOpinion' => $datos,
+                                    'msgErrOpin' => $msgErrOpin]);
+            } else {
+                // Insertar la opinión
+                $insertados = $this->modeloReservas->insertarOpinion($_POST['reservasSel'], $opinion, $dniCli);
+                if ($insertados) {
+                    return view('v_home', ['datosOpinion' => $datos,
+                                            'msgInfoOpi' => 'Gracias por tu opinión <br> Tu opinión ha sido guardado correctamente']);
+                } else {
+                    return view('v_home', ['datosOpinion' => $datos,
+                                            'msgErrOpin' => 'ERROR de inserción en la BD!']);
+                }
+            }
+        }
+
+      
     } 
 
 

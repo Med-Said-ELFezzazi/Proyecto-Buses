@@ -14,45 +14,32 @@
         </head>
         <body>
             <?php 
-                if ((isset($ciudadesOrg) && isset($ciudadesDes)) ||
-                    isset($servicios) || isset($msgError)) {
-                    echo view('v_reserva');
-                } else if (isset($compraOk) && isset($emailOk)) {
-                    echo view('v_compra');
-                } else if (isset($datosBuses)) {
-                    echo view('v_buses');
-                } else if (isset($datosAverias) || isset($datosFiltrados)) {
-                    echo view('v_averias');
-                } else if (isset($averia)) {
-                    echo view('v_modAveria');
-                } else if (isset($matriculas)) {
-                    echo view('v_altaAveria');
-                } else if (isset($datosRutas) || isset($datosFiltradosRutas)){
-                    echo view('v_rutas');
-                } else if (isset($rutaAmodificar)) {
-                    echo view('v_modRuta');
-                } else if (isset($matriculasPaRutas)) {
-                    echo view('v_altaRuta');
-                } else if(isset($gza)){
-                    echo view('v_modRuta');
-                }
-                else if (isset($tsting)) {
-                    echo view('vistaTemp');
-                
-                
-                } else if (isset($opin)) {      // exam
-                    echo view('v_opinion');
-
-                }
-                 else if (isset($busMod)) {
-                    echo view('v_modBus');
-                 }
-                
-                else {
-                    echo view('v_bienvenida');  // Aqui va logica de admin en la vista
+                   // Mapeo de condiciones a vistas
+                   $vistas = [
+                        'v_reserva' => isset($ciudadesOrg) && isset($ciudadesDes) || isset($servicios) || isset($msgError),
+                        'v_compra' => isset($compraOk) && isset($emailOk),
+                        'v_buses' => isset($datosBuses),
+                        'v_modBus' => isset($busMod),
+                        'v_averias' => isset($datosAverias) || isset($datosFiltrados),
+                        'v_modAveria' => isset($averia),
+                        'v_altaAveria' => isset($matriculas),
+                        'v_rutas' => isset($datosRutas) || isset($datosFiltradosRutas),
+                        'v_modRuta' => isset($rutaAmodificar),
+                        'v_altaRuta' => isset($matriculasPaRutas),
+                        'vistaTemp' => isset($tsting),
+                        'v_opinion' => isset($datosOpinion),
+                        'v_bienvenida' => true          // Vista por defecto 'dentro la vist v_bienvenida va la ligica de admin y cliente'
+                ];
+    
+                // Buscando la primera vista que sea true
+                foreach ($vistas as $view => $condition) {
+                    if ($condition) {
+                        echo view($view);
+                        break;
+                    }
                 }
 
-       
+
 
             ?>
 
@@ -73,27 +60,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
 
 
 $views = [

@@ -43,13 +43,12 @@ $routes->post('/admin/buses', 'CBuses::administracionBuses');   // Insertar nuev
 $routes->match(['GET', 'POST'],'/admin/buses/mod/(:any)', 'CBuses::modificarBus/$1');   // mod
 
 
-// $routes->post('/admin/buses/modificar', 'CAdmin::modificarBus'); // Elim
-
 // Gestion de averias
 $routes->get('/admin/averias', 'CAverias::gestionAverias'); // Cargar la vista
 $routes->post('/admin/averias', 'CAverias::gestionAverias'); // Aplicar filtros 
 // Modificar averia
 $routes->match(['GET', 'POST'], '/admin/averias/modificar/(:num)', 'CAverias::modificarAveria/$1');
+
 
 // Gestion de rutas
 $routes->match(['GET', 'POST'], '/admin/rutas', 'CRutas::gestionRutas');
@@ -59,5 +58,13 @@ $routes->match(['GET', 'POST'], '/admin/rutas/modificar/(:num)', 'CRutas::modifi
 
 
 // Opnion
+$routes->get('/opinion', 'CReserva::opinar');
+// Insertar opinión
+$routes->post('/opinion/add' , 'CReserva::insertarOpinion');
+
+/*
 $routes->match(['GET', 'POST'], '/opinion', 'CClientes::opinar');
-$routes->match(['GET', 'POST'], '/opinion/add', 'CClientes::opinaradd');
+
+
+
+$routes->match(['GET', 'POST'], '/opinion/add', 'CClientes::opinaradd');*/
