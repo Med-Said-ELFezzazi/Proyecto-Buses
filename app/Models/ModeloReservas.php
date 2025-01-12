@@ -119,5 +119,12 @@
     
 
 
+    public function asientoOcupado($id_ruta, $num_asiento) {
+        return $this->where('id_ruta', $id_ruta)
+                    ->where('num_asiento', $num_asiento)
+                    ->countAllResults() > 0;
+    }
+
+
 
 }

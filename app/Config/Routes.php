@@ -61,10 +61,3 @@ $routes->match(['GET', 'POST'], '/admin/rutas/modificar/(:num)', 'CRutas::modifi
 $routes->get('/opinion', 'CReserva::opinar');
 // Insertar opinión
 $routes->post('/opinion/add' , 'CReserva::insertarOpinion');
-
-/*
-$routes->match(['GET', 'POST'], '/opinion', 'CClientes::opinar');
-
-
-
-$routes->match(['GET', 'POST'], '/opinion/add', 'CClientes::opinaradd');*/

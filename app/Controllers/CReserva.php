@@ -210,7 +210,18 @@
                     // Generar asiento random
                     $arrAsientosRandom = $this->generarAsientoRandom($id_ruta, $numBilletesSel);
                 } else {
-                    // Meter el asiento insertado por el cliente en el arrayRandom
+                    // Verificar si el asiento proporcionado ya está ocupado
+                    if ($this->modeloReservas->asientoOcupado($id_ruta, $asiento)) {
+                        // Mostrar mensaje de error si el asiento está ocupado
+                        $msgErrorAsiento = "El asiento {$asiento} ya está ocupado. Por favor, selecciona otro o elige la opción de asignar asiento aleatorio";
+                        $ciudadesOrg = $this->obtenerCiudades('origen');
+                        $ciudadesDes = $this->obtenerCiudades('destino');
+                        return view('v_home', ['ciudadesOrg' => $ciudadesOrg,
+                                                'ciudadesDes' => $ciudadesDes,
+                                                'msgErrorAsiento' => $msgErrorAsiento]);
+                    }
+
+                    // Si el asiento está disponible, meter el asiento insertado por el cliente en el arrayRandom
                     $arrAsientosRandom = [$asiento];
                 }
                 // Insertar la reserva en la BD

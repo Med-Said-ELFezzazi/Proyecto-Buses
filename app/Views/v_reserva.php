@@ -205,6 +205,12 @@
                 <strong>Error!</strong> <?php echo $msgErrorLleno; ?>
                 </div>
                 <?php endif; ?>
+
+                <?php if (isset($msgErrorAsiento)): ?>
+                <div class="alert alert-danger text-center" role="alert">
+                <strong>Error!</strong> <?php echo $msgErrorAsiento; ?>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
 
