@@ -47,7 +47,7 @@
             'ciudadesDes' => $ciudadesDes,
             ]);
         }
-        
+
         
         public function servicios() {
             // Obtener datos a buscar
@@ -211,19 +211,29 @@
                     // Generar asiento random
                     $arrAsientosRandom = $this->generarAsientoRandom($id_ruta, $numBilletesSel);
                 } else {
+                    $ciudadesOrg = $this->obtenerCiudades('origen');
+                    $ciudadesDes = $this->obtenerCiudades('destino');
                     // Verificar si el asiento proporcionado ya está ocupado
                     if ($this->modeloReservas->asientoOcupado($id_ruta, $asiento)) {
                         // Mostrar mensaje de error si el asiento está ocupado
                         $msgErrorAsiento = "El asiento {$asiento} ya está ocupado. Por favor, selecciona otro o elige la opción de asignar asiento aleatorio";
-                        $ciudadesOrg = $this->obtenerCiudades('origen');
-                        $ciudadesDes = $this->obtenerCiudades('destino');
                         return view('v_home', ['ciudadesOrg' => $ciudadesOrg,
                                                 'ciudadesDes' => $ciudadesDes,
                                                 'msgErrorAsiento' => $msgErrorAsiento]);
                     }
 
-                    // Si el asiento está disponible, meter el asiento insertado por el cliente en el arrayRandom
-                    $arrAsientosRandom = [$asiento];
+                    // Comprobar si el numero de asiento insertado es mayor que la capacidad del bus
+                    $matricula = $this->modeloRutas->dameDatosRuta($id_ruta)->matricula;
+                    $capaBus = $this->modeloBuses->capacidadBus($matricula);
+
+                    if ($asiento > $capaBus) {
+                        return view('v_home', ['ciudadesOrg' => $ciudadesOrg,
+                                            'ciudadesDes' => $ciudadesDes,
+                                            'msgErrorAsiento' => 'Número de asiento mayor que la capacidad maxima del bus!']);
+                    } else {
+                        // Si el asiento está disponible, meter el asiento insertado por el cliente en el arrayRandom
+                        $arrAsientosRandom = [$asiento];
+                    }
                 }
                 // Insertar la reserva en la BD
                 $reservaGrabada = $this->modeloReservas->agregarReserva(
