@@ -48,7 +48,7 @@
             ]);
         }
         
-
+        
         public function servicios() {
             // Obtener datos a buscar
             // $fechaIda = $_POST['fecha_ida'];
@@ -92,6 +92,7 @@
                 'servicios' => $servicios
             ]);
         }
+       
 
         // Función que envía un correo al cliente con los detalles de la compra
         public function enviarEmailCompra($emailCliente, $fechaIda, $horaSalidaIda, $origen, $destino, $arrTicketAsiento) {
@@ -349,3 +350,83 @@
 
 
 ?>
+
+
+
+<!-- /*public function servicios() {
+            // Para rellenar los campos de origen y destino
+            $ciudadesOrg = $this->obtenerCiudades('origen');
+            $ciudadesDes = $this->obtenerCiudades('destino');
+        
+            // Obtener datos a buscar
+            $Numbilletes = $_POST['Numbilletes'];
+        
+            // Comprobar si el checkbox soloIda está seleccionado
+            if (isset($_POST['soloIda'])) {
+                // Mandar datos solo de ida
+                $fechaIda = $_POST['fecha_ida'];
+        
+                $origen = $_POST['ciudad_origen'];
+                $destino = $_POST['ciudad_destino'];
+        
+                // Datos de rutas según los filtros seleccionados
+                $datosRuta = $this->modeloRutas->datosRutas($fechaIda, $origen, $destino);
+                $servicios = $this->procesarServicios($datosRuta, $Numbilletes);
+        
+                return view("v_home", [
+                    'ciudadesOrg' => $ciudadesOrg,
+                    'ciudadesDes' => $ciudadesDes,
+                    'servicios' => $servicios
+                ]);
+            } else {
+                // Mandar datos de ida y vuelta
+                $fechaIda = $_POST['fecha_ida'];
+                $fechaVuelta = $_POST['fecha_vuelta'];
+        
+                $origen = $_POST['ciudad_origen'];
+                $destino = $_POST['ciudad_destino'];
+        
+                // Datos de ida
+                $datosRutaIda = $this->modeloRutas->datosRutas($fechaIda, $origen, $destino);
+                $serviciosIda = $this->procesarServicios($datosRutaIda, $Numbilletes);
+        
+                // Datos de vuelta 'intercambiar origen y destino'
+                $datosRutaVuelta = $this->modeloRutas->datosRutas($fechaVuelta, $destino, $origen);
+                $serviciosVuelta = $this->procesarServicios($datosRutaVuelta, $Numbilletes);
+        
+                return view("v_home", [
+                    'ciudadesOrg' => $ciudadesOrg,
+                    'ciudadesDes' => $ciudadesDes,
+                    'serviciosIda' => $serviciosIda,
+                    'serviciosVuelta' => $serviciosVuelta
+                ]);
+            }
+        }
+        
+        // Método auxiliar para procesar los servicios
+        private function procesarServicios($datosRuta, $Numbilletes) {
+            $servicios = [];
+        
+            foreach ($datosRuta as $datos) {
+                $id_ruta = $datos->id_ruta;
+        
+                // Disponibilidad de plazas
+                $matriculaBusRuta = $this->modeloRutas->matriculaRuta($id_ruta);
+                $capacidadMaxBus = $this->modeloBuses->capacidadBus($matriculaBusRuta);
+                $cantidadReservas = $this->modeloReservas->numeroReservas($id_ruta);
+        
+                $hayPlazas = ($cantidadReservas + $Numbilletes <= $capacidadMaxBus);
+        
+                // Preparar datos a enviar en la variable servicios
+                $servicios[] = [
+                    'id_ruta' => $id_ruta,
+                    'hora_salida' => $datos->hora_salida,
+                    'hora_llegada' => $datos->hora_llegada,
+                    'precio' => $datos->tarifa,
+                    'plazas_libres' => $capacidadMaxBus - $cantidadReservas,
+                    'hayPlazas' => $hayPlazas
+                ];
+            }
+        
+            return $servicios;
+        }*/ -->
